@@ -1,0 +1,39 @@
+﻿{
+    "items": [
+        {
+            "itemID": "roll_cake_wood",
+            "displayName": "롤케이크 나무조각",
+            "type": "metarial",
+            "description": "조각조각 잘게 잘린 롤케이크 나뭇조각. 맛있는 향기가 난다고 깨물면 부서질지도?!",
+            "iconPath": "Material_roll_cake_wood"
+        },
+        {
+            "itemID": "jellybean",
+            "displayName": "젤리빈",
+            "type": "metarial",
+            "description": "씹고 또 씹어도 단맛이 사라지질 않는 쿠키들의 주식. 말랑말랑 탱글탱글해 쉽게 터지지 않는다구!",
+            "iconPath": "Material_jellybean"
+        },
+        {
+            "itemID": "sugar_cube",
+            "displayName": "각설탕 조각",
+            "type": "metarial",
+            "description": "어찌 된 일인지 네모나고 각지게만 채취되는 각설탕 조각. 각미 줌묘해서 채취할 때 돔그란 발믐믈 해서는 만된다.",
+            "iconPath": "Material_sugar_cube"
+        },
+        {
+            "itemID": "robust_axe",
+            "displayName": "단단 도끼",
+            "type": "goods",
+            "description": "나무를 베어낼 수 있다. 나무만 베어낼 수 있는 건 아니지만.",
+            "iconPath": "Craft_robust_axe"
+        },
+        {
+            "itemID": "tempered_pickaxe",
+            "displayName": "튼튼 곡괭이",
+            "type": "goods",
+            "description": "사용할 때에는 주변에 다른 쿠키들이 있나 살펴보자. 안전제일!",
+            "iconPath": "Craft_tempered_pickaxe"
+        }
+    ]
+}

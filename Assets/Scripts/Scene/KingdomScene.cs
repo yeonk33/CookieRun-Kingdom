@@ -9,5 +9,7 @@ public class KingdomScene : BaseScene
 		// KingdomScene에서 처리해야할 Init 작업들
 		Scene = Define.Scene.KingdomScene;
 		Debug.Log($"current scene {Scene}");
+		DataGenerationManager.GenerateAll();
+		ItemDatabase.LoadJSON();
 	}
 }
