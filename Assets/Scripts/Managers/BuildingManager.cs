@@ -8,20 +8,19 @@ public class BuildingManager : MonoBehaviour
 {
 	public static BuildingManager Instance;
 
-	public GameObject ProducePanel;
+	public GameObject ProductionPanel;
 	public TextMeshProUGUI BuildingName;
 	public Image BuildingIcon;
 
 	public void Awake()
 	{
 		Instance = this;
-		Debug.Log("building manager awake");
 	}
 
 	public void OpenPanel()
 	{
 		if (gameObject.activeSelf) {
-			ProducePanel.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			ProductionPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 		} else {
 			gameObject.SetActive(true);
 		}

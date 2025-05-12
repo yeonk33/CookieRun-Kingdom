@@ -1,0 +1,84 @@
+﻿{
+    "products": [
+        {
+            "ProductionId": "roll_cake_wood",
+            "displayName": "롤케이크 나무조각 수정",
+            "buildingId": "lumberjacks_lodge",
+            "outputItemId": "roll_cake_wood",
+            "outputItemAmout": 3,
+            "coinCost": 30,
+            "timeCost": 5,
+            "iconPath": "Material_roll_cake_wood",
+            "inputResources": []
+        },
+        {
+            "ProductionId": "roll_cake_wood_bundle",
+            "displayName": "롤케이크 나무 묶음",
+            "buildingId": "lumberjacks_lodge",
+            "outputItemId": "roll_cake_wood",
+            "outputItemAmout": 9,
+            "coinCost": 90,
+            "timeCost": 10,
+            "iconPath": "Material_roll_cake_wood_bundle",
+            "inputResources": []
+        },
+        {
+            "ProductionId": "roll_cake_wood_pile",
+            "displayName": "롤케이크 나무 더미",
+            "buildingId": "lumberjacks_lodge",
+            "outputItemId": "roll_cake_wood",
+            "outputItemAmout": 20,
+            "coinCost": 200,
+            "timeCost": 15,
+            "iconPath": "Material_roll_cake_wood_pile",
+            "inputResources": []
+        },
+        {
+            "ProductionId": "roll_cake_wood_haul",
+            "displayName": "꽉 찬 롤케이크 나무 더미",
+            "buildingId": "lumberjacks_lodge",
+            "outputItemId": "roll_cake_wood",
+            "outputItemAmout": 35,
+            "coinCost": 350,
+            "timeCost": 20,
+            "iconPath": "Material_roll_cake_wood_haul",
+            "inputResources": []
+        },
+        {
+            "ProductionId": "robust_axe",
+            "displayName": "단단 도끼",
+            "buildingId": "smithy",
+            "outputItemId": "robust_axe",
+            "outputItemAmout": 1,
+            "coinCost": 0,
+            "timeCost": 5,
+            "iconPath": "Craft_robust_axe",
+            "inputResources": [
+                {
+                    "itemId": "roll_cake_wood",
+                    "amount": 0
+                }
+            ]
+        },
+        {
+            "ProductionId": "tempered_pickaxe",
+            "displayName": "튼튼 곡괭이",
+            "buildingId": "smithy",
+            "outputItemId": "tempered_pickaxe",
+            "outputItemAmout": 1,
+            "coinCost": 0,
+            "timeCost": 10,
+            "iconPath": "Craft_tempered_pickaxe",
+            "inputResources": [
+                {
+                    "itemId": "roll_cake_wood",
+                    "amount": 0
+                },
+                {
+                    "itemId": "sugar_cube",
+                    "amount": 0
+                }
+            ]
+        }
+    ]
+}

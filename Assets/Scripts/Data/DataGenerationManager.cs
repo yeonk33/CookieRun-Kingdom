@@ -9,14 +9,24 @@ using UnityEngine;
 public class DataGenerationManager
 {
 	private const string _sheetId = "1xJBhZHkJOecj9tKmt8FIbkzkCmjhDdv35cuZTS3mrwA";
+	
 	private const string _itemSheetName = "Item";
 	private const string _itemJsonPath = "Assets/Resources/Data/item_data.json";
 	private const string _itemHashPath = "Library/.item_data.hash";
-	private const string _iteScriptPath = "Assets/Scripts/Data/Item/ItemId.cs"; // 스크립트로 만들 스크립트
+	private const string _itemScriptPath = "Assets/Scripts/Data/Item/ItemId.cs"; // 스크립트로 만들 스크립트
+
+	private const string _productionSheetName = "Production";
+	private const string _productionJsonPath = "Assets/Resources/Data/production_data.json";
+	private const string _productionHashPath = "Library/.production_data.hash";
+	private const string _productionScriptPath = "Assets/Scripts/Data/Production/ProductionId.cs"; // 스크립트로 만들 스크립트
 
 	public static void GenerateAll()
 	{
 		bool itemChanged = Download(_itemSheetName, _itemHashPath, _itemJsonPath, ParseItemCSV);
+		bool productionChanged = Download(_productionSheetName, _productionHashPath, _productionJsonPath, ParseProductionCSV);
+
+		if (itemChanged) GenerateItemIdClass();
+		if (productionChanged) GenerateProductionIdClass();
 	}
 
 
@@ -90,10 +100,164 @@ public class DataGenerationManager
 		return JsonUtility.ToJson(new ItemArrayWrapper { items = fullList }, true); // json 데이터 return
 	}
 
+	private static string ParseProductionCSV(string arg)
+	{
+		List<ProductionData> fullList = new List<ProductionData>();
+		string[] lines = arg.Split('\n');
+
+		for (int i = 1; i < lines.Length; i++) {
+			string[] cols = lines[i].Split(','); // csv는 ,로 분리됨
+			ProductionData fullData = new ProductionData
+			{
+				ProductionId = Clean(cols[0]),
+				displayName = Clean(cols[1]),
+				buildingId = Clean(cols[2]),
+				outputItemId = Clean(cols[3]),
+				outputItemAmout = SafeParseInt(Clean(cols[4])),
+				coinCost = SafeParseInt(Clean(cols[5])),
+				timeCost = SafeParseInt(Clean(cols[6])),
+				iconPath = Clean(cols[7]),
+				inputResources = new List<ResourceCost>(),
+
+			};
+
+			if (!string.IsNullOrWhiteSpace(Clean(cols[8]))) {
+				fullData.inputResources.Add(new ResourceCost { itemId = Clean(cols[8]), amount = SafeParseInt(cols[9])});
+			}
+			if (!string.IsNullOrWhiteSpace(Clean(cols[10]))) {
+				fullData.inputResources.Add(new ResourceCost { itemId = Clean(cols[10]), amount = SafeParseInt(cols[11]) });
+			}
+
+			fullList.Add(fullData);
+
+		}
+
+		File.WriteAllText(_productionJsonPath, JsonUtility.ToJson(new ProductionArrayWrapper { products = fullList }, true), new UTF8Encoding(true));
+
+		return JsonUtility.ToJson(new ProductionArrayWrapper { products = fullList }, true); // json 데이터 return
+	}
+
+	public static void GenerateItemIdClass()
+	{
+		if (!File.Exists(_itemJsonPath)) {
+			Debug.LogError($"Json 파일을 찾을 수 없습니다 {_itemJsonPath}");
+			return;
+		}
+
+		string json = File.ReadAllText(_itemJsonPath);
+		ItemArrayWrapper data = JsonUtility.FromJson<ItemArrayWrapper>(json);
+
+		if (data == null || data.items == null) {
+			Debug.LogError($"Json 파싱 실패 {_itemJsonPath}");
+			return;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.AppendLine($"/// <summary>");
+		sb.AppendLine($"/// 자동 생성된 아이템 Id 상수 목록");
+		sb.AppendLine($"/// ItemId.RollCakeWood 로 접근 가능");
+		sb.AppendLine($"/// </summary>");
+		sb.AppendLine($"public static class ItemId");
+		sb.AppendLine("{");
+
+		HashSet<string> keys = new HashSet<string>();
+		foreach (var item in data.items) {
+			if (string.IsNullOrEmpty(item.itemID)) continue;
+
+			string key = ToPascalCase(item.itemID);
+			if (!keys.Add(key)) {
+				Debug.LogError($"중복된 키 {key}");
+				continue;
+			}
+
+			// public const string rollCakeWood = "roll_cake_wood"; 를 작성하는 부분
+			sb.AppendLine($"	public const string {key} = \"{item.itemID}\";");
+		}
+
+		sb.AppendLine();
+		sb.AppendLine("\tpublic static readonly string[] All = new[]");
+		sb.AppendLine("\t{");
+
+		foreach (var item in data.items) {
+			string key = ToPascalCase(item.itemID);
+			sb.AppendLine($"\t\t{key},");
+		}
+		sb.AppendLine("\t};");
+		sb.AppendLine("}");
+		
+		File.WriteAllText(_itemScriptPath, sb.ToString(), Encoding.UTF8);
+		Debug.Log($"ItemId.cs 생성 완료");
+	}
+
+	public static void GenerateProductionIdClass()
+	{
+		if (!File.Exists(_productionJsonPath)) {
+			Debug.LogError($"Json 파일을 찾을 수 없습니다 {_productionJsonPath}");
+			return;
+		}
+
+		string json = File.ReadAllText(_productionJsonPath);
+		ProductionArrayWrapper data = JsonUtility.FromJson<ProductionArrayWrapper>(json);
+
+		if (data == null || data.products == null) {
+			Debug.LogError($"Json 파싱 실패 {_productionJsonPath}");
+			return;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.AppendLine($"/// <summary>");
+		sb.AppendLine($"/// 자동 생성된 아이템 Id 상수 목록");
+		sb.AppendLine($"/// ProductionId.roll_cake_wood_bundle 로 접근 가능");
+		sb.AppendLine($"/// </summary>");
+		sb.AppendLine($"public static class ProductionId");
+		sb.AppendLine("{");
+
+		HashSet<string> keys = new HashSet<string>();
+		foreach (var production in data.products) {
+			if (string.IsNullOrEmpty(production.ProductionId)) continue;
+
+			string key = ToPascalCase(production.ProductionId);
+			if (!keys.Add(key)) {
+				Debug.LogError($"중복된 키 {key}");
+				continue;
+			}
+
+			// public const string rollCakeWood = "roll_cake_wood"; 를 작성하는 부분
+			sb.AppendLine($"	public const string {key} = \"{production.ProductionId}\";");
+		}
+
+		sb.AppendLine();
+		sb.AppendLine("\tpublic static readonly string[] All = new[]");
+		sb.AppendLine("\t{");
+
+		foreach (var production in data.products) {
+			string key = ToPascalCase(production.ProductionId);
+			sb.AppendLine($"\t\t{key},");
+		}
+		sb.AppendLine("\t};");
+		sb.AppendLine("}");
+
+		File.WriteAllText(_productionScriptPath, sb.ToString(), Encoding.UTF8);
+		Debug.Log($"ProductionId.cs 생성 완료");
+	}
+
+	private static string ToPascalCase(string str)
+	{
+		string[] parts = str.Split('_');
+		for (int i = 0; i < parts.Length; i++) {
+			parts[i] = char.ToUpperInvariant(parts[i][0]) + parts[i][1..];
+		}
+		return string.Join("", parts);
+	}
+
 	// 공백과 " 제거
 	private static string Clean(string str) => str.Trim().Trim('"');
+	private static int SafeParseInt(string str, int defaultValue = 0) => int.TryParse(str, out int result) ? result : defaultValue;
 }
 
 // Unity의 JsonUtility는 클래스와 구조체의 필드만 직렬화 대상으로 보기 때문에 감싸줘함.
 [System.Serializable]
 public class ItemArrayWrapper { public List<ItemData> items; }
+
+[System.Serializable]
+public class ProductionArrayWrapper { public List<ProductionData> products; }
