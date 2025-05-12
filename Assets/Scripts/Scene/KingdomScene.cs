@@ -6,7 +6,7 @@ public class KingdomScene : BaseScene
 	{
 		base.Init();
 
-		// KingdomScene¿¡¼­ Ã³¸®ÇØ¾ßÇÒ Init ÀÛ¾÷µé
+		// KingdomSceneì—ì„œ ì²˜ë¦¬í•´ì•¼í•  Init ì‘ì—…ë“¤
 		Scene = Define.Scene.KingdomScene;
 		Debug.Log($"current scene {Scene}");
 		DataGenerationManager.GenerateAll();

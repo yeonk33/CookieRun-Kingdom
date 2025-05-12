@@ -16,7 +16,7 @@ public static class ItemDatabase
 			itemMap[item.itemID] = item;
 		}
 
-		Debug.Log($"¾ÆÀÌÅÛ µ¥ÀÌÅÍ {itemMap.Count}°³ ·Îµå ¿Ï·á");
+		Debug.Log($"ì•„ì´í…œ ë°ì´í„° {itemMap.Count}ê°œ ë¡œë“œ ì™„ë£Œ");
 	}
 
 	public static ItemData Get(string id) => itemMap.TryGetValue(id, out var data) ? data : null;

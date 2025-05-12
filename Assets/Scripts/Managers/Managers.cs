@@ -9,11 +9,11 @@ public class Managers : MonoBehaviour
 		{
 			if (s_instance == null) {
 				Debug.Log("find Managers");
-				s_instance = FindFirstObjectByType<Managers>(); // Managers ¾øÀ¸¸é Ã£±â
+				s_instance = FindFirstObjectByType<Managers>(); // Managers ì—†ìœ¼ë©´ ì°¾ê¸°
 				if (s_instance == null) {
-					Debug.Log("Managers ¾øÀ½ »õ·Î »ı¼º");
+					Debug.Log("Managers ì—†ìŒ ìƒˆë¡œ ìƒì„±");
 					GameObject go = new GameObject("Managers");
-					s_instance = go.AddComponent<Managers>(); // ±×·¡µµ ¾øÀ¸¸é ¸¸µé±â
+					s_instance = go.AddComponent<Managers>(); // ê·¸ë˜ë„ ì—†ìœ¼ë©´ ë§Œë“¤ê¸°
 					DontDestroyOnLoad(go);
 				}
 			}
@@ -23,6 +23,6 @@ public class Managers : MonoBehaviour
 
 	private GameManager _game;
 	private SceneMangerEx _scene;
-	public static GameManager Game => Instance._game ??= new GameManager(); // »ç¿ëµÉ ¶§ »ı¼º
+	public static GameManager Game => Instance._game ??= new GameManager(); // ì‚¬ìš©ë  ë•Œ ìƒì„±
 	public static SceneMangerEx Scene => Instance._scene ??= new SceneMangerEx();
 }

@@ -30,9 +30,9 @@ public class BuildingManager : MonoBehaviour
 
 	private void LoadBuildingJson()
 	{
-		// building json ºÒ·¯¿À±â
+		// building json ë¶ˆëŸ¬ì˜¤ê¸°
 
-		// BuildingName.text = "³ª¹«²ÛÀÇ Áı";
+		// BuildingName.text = "ë‚˜ë¬´ê¾¼ì˜ ì§‘";
 		// BuildingIcon.Sprite = ;
 	}
 }

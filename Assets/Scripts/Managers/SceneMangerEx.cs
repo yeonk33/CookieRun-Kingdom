@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneMangerEx
 {
-	public BaseScene CurrentScene // ¿ÜºÎ¿¡¼­ ÇöÀç ¾À get °¡´É
+	public BaseScene CurrentScene // ì™¸ë¶€ì—ì„œ í˜„ì¬ ì”¬ get ê°€ëŠ¥
 	{
 		get	{ return GameObject.FindObjectOfType<BaseScene>(); }
 	}
 
-	private string GetSceneName(Define.Scene s) // sceneÀ» enum -> string º¯È¯
+	private string GetSceneName(Define.Scene s) // sceneì„ enum -> string ë³€í™˜
 	{
 		return System.Enum.GetName(typeof(Define.Scene), s);
 	}

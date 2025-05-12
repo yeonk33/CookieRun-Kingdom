@@ -6,7 +6,7 @@ using static UnityEditor.Progress;
 
 public class ItemUIController : MonoBehaviour
 {
-	public Transform itemPanel; // ¾ÆÀÌÅÛÀ» ³ÖÀ» UI Panel
+	public Transform itemPanel; // ì•„ì´í…œì„ ë„£ì„ UI Panel
 
 	private void Start()
 	{
@@ -14,10 +14,10 @@ public class ItemUIController : MonoBehaviour
 			if (item.iconSprite == null) continue;
 
 			GameObject go = new GameObject("ItemImage", typeof(RectTransform), typeof(Image));
-			go.transform.SetParent(itemPanel, false); // ÆĞ³Î ¾Æ·¡¿¡ ºÙÀÌ±â
+			go.transform.SetParent(itemPanel, false); // íŒ¨ë„ ì•„ë˜ì— ë¶™ì´ê¸°
 
 			Image image = go.GetComponent<Image>();
-			image.sprite = item.iconSprite; // ÀÌ¹ÌÁö ¼³Á¤
+			image.sprite = item.iconSprite; // ì´ë¯¸ì§€ ì„¤ì •
 		}
 	}
 }
