@@ -1,0 +1,22 @@
+﻿using System;
+using UnityEditor;
+using UnityEngine;
+
+[CustomPropertyDrawer(typeof(ProductionIdAttribute))]
+public class ProductionIdDrawer : PropertyDrawer
+{
+	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	{
+		//base.OnGUI(position, property, label);
+
+		string[] allIds = ProductionId.All;
+		int currentIndex = Array.IndexOf(allIds, property.stringValue);
+		if (currentIndex < 0) {
+			currentIndex = 0; // default값 0으로 설정
+
+		}
+
+		int selectedIndex = EditorGUI.Popup(position, label.text, currentIndex, allIds);
+		property.stringValue = allIds[selectedIndex];
+	}
+}
