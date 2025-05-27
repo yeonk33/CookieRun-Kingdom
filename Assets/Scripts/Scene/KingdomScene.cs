@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class KingdomScene : BaseScene
 {
@@ -11,5 +11,7 @@ public class KingdomScene : BaseScene
 		Debug.Log($"current scene {Scene}");
 		DataGenerationManager.GenerateAll();
 		ItemDatabase.LoadJSON();
+		ProductionDatabase.LoadJSON();
+		BuildingDatabase.LoadSO();
 	}
 }
