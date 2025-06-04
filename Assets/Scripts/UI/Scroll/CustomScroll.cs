@@ -13,8 +13,8 @@ public class CustomScrollView : MonoBehaviour
 	public ScrollRect ScrollRect;       // 스크롤 영역에 붙은 컴포넌트
 
 	public int ItemCount = 2000;       // 전체 개수
-	public float ItemWidth = 30f;     // 아이템 하나 너비, TODO : 나중에는 prefab에서 가져오도록 개선
-	public float ItemHeight = 30f;     // 아이템 하나 높이, TODO : 나중에는 prefab에서 가져오도록 개선
+	public float ItemWidth;     // 아이템 하나 너비, TODO : 나중에는 prefab에서 가져오도록 개선
+	public float ItemHeight;     // 아이템 하나 높이, TODO : 나중에는 prefab에서 가져오도록 개선
 	public int BufferCount = 10;       // 추가로 생성할 버퍼 아이템 개수
 
 	private IScrollLayout layout;
@@ -26,17 +26,23 @@ public class CustomScrollView : MonoBehaviour
 	{
 		this.layout = layout;
 		this.ItemCount = itemCount;
-		this.Viewport.sizeDelta = layout.GetContentSize(itemCount);
-
-		_visibleCount = layout.GetVisibleCount(Viewport.rect.height, BufferCount);
+		this.SlotPrefab = slotPrefab;
+		this.ContentRoot.sizeDelta = layout.GetContentSize(itemCount);
+		this._visibleCount = layout.GetVisibleCount(Viewport.rect.height, BufferCount);
+		RectTransform rectTransform = slotPrefab.GetComponent<RectTransform>();
+		if (rectTransform != null) {
+			this.ItemWidth = rectTransform.rect.width;
+			this.ItemHeight = rectTransform.rect.height;
+		}
 
 		for (int i = 0; i < _visibleCount; ++i) {
-			GameObject item = Instantiate(SlotPrefab, ContentRoot);
-			var label = item.GetComponentInChildren<TMP_Text>();
-			if (label != null) label.text = $"item_{i}";
-			item.SetActive(false);
-			_pool.Add(item);
+			//GameObject item = Instantiate(SlotPrefab, ContentRoot);
+			//var label = item.GetComponentInChildren<TMP_Text>();
+			//if (label != null) label.text = $"item_{i}";
+			//item.SetActive(false);
+			_pool.Add(SlotPrefab);
 		}
+		
 
 		RefreshItems();
 	}

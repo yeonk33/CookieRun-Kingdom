@@ -24,7 +24,6 @@ public static class ProductionDatabase
 			p.inputResources = item.inputResources;
 			p.iconSprite = Resources.Load<Sprite>($"Data/Icon/{item.iconPath}");
 			productionMap.Add(p.ProductionId, p);
-			Debug.Log($"{p.ProductionId}");
 		}
 	}
 

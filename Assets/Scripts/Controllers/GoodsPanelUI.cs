@@ -25,8 +25,13 @@ public class GoodsPanelUI : MonoBehaviour
 		DisplayName.text = production.displayName;
 		GoodsImage.sprite = production.iconSprite;
 		SmallImage.sprite = production.iconSprite;
-		Amount.text = production.outputItemAmout.ToString();
+		Amount.text = "X " + production.outputItemAmout.ToString();
 		Cost.text = production.coinCost.ToString();
-		Time.text = production.timeCost.ToString();
+		Time.text = production.timeCost.ToString() + "초";
+	}
+
+	public void SetData()
+	{
+
 	}
 }
