@@ -32,4 +32,16 @@ public static class UserDatabase
 			return null;
 		} else return uidUser;
 	}
+
+	public static bool AddStock(ItemData goods, int amount)
+	{
+		if (goods == null || amount == 0) {
+			Debug.LogError($"재고 추가 실패");
+			return false;
+		}
+
+
+
+		return true;
+	}
 }

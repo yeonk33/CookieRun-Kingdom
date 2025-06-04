@@ -69,7 +69,7 @@ public class ProductionPanel : MonoBehaviour
 	{
 		if (_isProducting) { Debug.Log("생산대기열이 꽉찼습니다."); return; } // @@@@ text로 화면에 띄우기
 		_listImage.sprite = production.iconSprite;
-		_listTime.text = production.timeCost.ToString();
+		_listTime.text = production.timeCost.ToString() + "초";
 		_endTime = DateTime.UtcNow.AddSeconds(production.timeCost);
 		Debug.Log($"{production.displayName} {_endTime}에 생산 완료.");
 		PlayerPrefs.SetString("endTime", _endTime.ToString());
@@ -83,7 +83,7 @@ public class ProductionPanel : MonoBehaviour
 
 		var remainTime = _endTime - DateTime.UtcNow;
 		if (remainTime.TotalSeconds > 0) {
-			_listTime.text = Mathf.CeilToInt((float)remainTime.TotalSeconds).ToString();
+			_listTime.text = Mathf.CeilToInt((float)remainTime.TotalSeconds).ToString() + "초";
 		} else {
 			Debug.Log("생산 완료");
 			// Inventory.Add(production, amount); // @@@@@@ 추가예정
