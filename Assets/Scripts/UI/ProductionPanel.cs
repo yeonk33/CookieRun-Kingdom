@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,9 +17,14 @@ public class ProductionPanel : MonoBehaviour
 			Destroy(gameObject);
 	}
 
-	[SerializeField] private TextMeshProUGUI _displayName;
+	[SerializeField] private TMP_Text _displayName;
 	[SerializeField] private Image _image;
 	[SerializeField] private Transform _contentRoot;
+	[SerializeField] private Image _listImage; // @@@@@ 나중에 LIst<>에 담기
+	[SerializeField] private TMP_Text _listTime;// @@@@@ 나중에 LIst<>에 담기
+	
+	private bool _isProducting = false;
+	private DateTime _endTime;
 
 	public void OpenPanel(BuildingData data, int lv)
 	{
@@ -56,5 +63,33 @@ public class ProductionPanel : MonoBehaviour
 		var scroll = this.GetComponentInChildren<CustomScrollView>();
 		var layout = new ScrollLine(goodsUI.GetComponent<RectTransform>().rect.height);
 		scroll.Init(layout, productionsId.Count, goodsUI);
+	}
+
+	public void Enqueue(ProductionData production)
+	{
+		if (_isProducting) { Debug.Log("생산대기열이 꽉찼습니다."); return; } // @@@@ text로 화면에 띄우기
+		_listImage.sprite = production.iconSprite;
+		_listTime.text = production.timeCost.ToString();
+		_endTime = DateTime.UtcNow.AddSeconds(production.timeCost);
+		Debug.Log($"{production.displayName} {_endTime}에 생산 완료.");
+		PlayerPrefs.SetString("endTime", _endTime.ToString());
+		PlayerPrefs.Save();
+		_isProducting = true;
+	}
+
+	private void Update()
+	{
+		if (!_isProducting) { return; }
+
+		var remainTime = _endTime - DateTime.UtcNow;
+		if (remainTime.TotalSeconds > 0) {
+			_listTime.text = Mathf.CeilToInt((float)remainTime.TotalSeconds).ToString();
+		} else {
+			Debug.Log("생산 완료");
+			// Inventory.Add(production, amount); // @@@@@@ 추가예정
+			_listImage.sprite = null;
+			_listTime.text = null;
+			_isProducting = false;
+		}
 	}
 }

@@ -50,7 +50,7 @@
             "buildingId": "smithy",
             "outputItemId": "robust_axe",
             "outputItemAmout": 1,
-            "coinCost": 0,
+            "coinCost": 300,
             "timeCost": 5,
             "iconPath": "Craft_robust_axe",
             "inputResources": [
@@ -66,7 +66,7 @@
             "buildingId": "smithy",
             "outputItemId": "tempered_pickaxe",
             "outputItemAmout": 1,
-            "coinCost": 0,
+            "coinCost": 350,
             "timeCost": 10,
             "iconPath": "Craft_tempered_pickaxe",
             "inputResources": [

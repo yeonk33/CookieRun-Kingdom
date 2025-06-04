@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -13,17 +13,24 @@ public class DataGenerationManager
 	private const string _itemSheetName = "Item";
 	private const string _itemJsonPath = "Assets/Resources/Data/item_data.json";
 	private const string _itemHashPath = "Library/.item_data.hash";
-	private const string _itemScriptPath = "Assets/Scripts/Data/Item/ItemId.cs"; // ½ºÅ©¸³Æ®·Î ¸¸µé ½ºÅ©¸³Æ®
+	private const string _itemScriptPath = "Assets/Scripts/Data/Item/ItemId.cs"; // ìŠ¤í¬ë¦½íŠ¸ë¡œ ë§Œë“¤ ìŠ¤í¬ë¦½íŠ¸
 
 	private const string _productionSheetName = "Production";
 	private const string _productionJsonPath = "Assets/Resources/Data/production_data.json";
 	private const string _productionHashPath = "Library/.production_data.hash";
-	private const string _productionScriptPath = "Assets/Scripts/Data/Production/ProductionId.cs"; // ½ºÅ©¸³Æ®·Î ¸¸µé ½ºÅ©¸³Æ®
+	private const string _productionScriptPath = "Assets/Scripts/Data/Production/ProductionId.cs"; // ìŠ¤í¬ë¦½íŠ¸ë¡œ ë§Œë“¤ ìŠ¤í¬ë¦½íŠ¸
+
+	private const string _userSheetName = "User";
+	private const string _userJsonPath = "Assets/Resources/Data/user_data.json";
+	private const string _userHashPath = "Library/.user_data.hash";
+	//private const string _userScriptPath = "Assets/Scripts/Data/User/UserId.cs"; // ìŠ¤í¬ë¦½íŠ¸ë¡œ ë§Œë“¤ ìŠ¤í¬ë¦½íŠ¸
+
 
 	public static void GenerateAll()
 	{
 		bool itemChanged = Download(_itemSheetName, _itemHashPath, _itemJsonPath, ParseItemCSV);
 		bool productionChanged = Download(_productionSheetName, _productionHashPath, _productionJsonPath, ParseProductionCSV);
+		bool userChanged = Download(_userSheetName, _userHashPath, _userJsonPath, ParseUserCSV);
 
 		if (itemChanged) GenerateItemIdClass();
 		if (productionChanged) GenerateProductionIdClass();
@@ -31,42 +38,42 @@ public class DataGenerationManager
 
 
 	/// <summary>
-	/// µ¥ÀÌÅÍ ´Ù¿î·Îµå ÈÄ º¯°æµÈ °ÍÀÌ ÀÖ´Ù¸é ÇØ½Ã°ª ¾÷µ¥ÀÌÆ®
+	/// ë°ì´í„° ë‹¤ìš´ë¡œë“œ í›„ ë³€ê²½ëœ ê²ƒì´ ìˆë‹¤ë©´ í•´ì‹œê°’ ì—…ë°ì´íŠ¸
 	/// </summary>
 	private static bool Download(string sheetName, string hashPath, string jsonPath, Func<string, string> parser)
 	{
-		// google spreadsheet »ç¿ë
+		// google spreadsheet ì‚¬ìš©
 		string url = $"https://docs.google.com/spreadsheets/d/{_sheetId}/gviz/tq?tqx=out:csv&sheet={sheetName}";
 
 		try {
 			using (WebClient client = new WebClient()) {
-				byte[] rowData = client.DownloadData(url); // data ´Ù¿î
-				string csv = Encoding.UTF8.GetString(rowData); // utf-8·Î ÀÎÄÚµù
+				byte[] rowData = client.DownloadData(url); // data ë‹¤ìš´
+				string csv = Encoding.UTF8.GetString(rowData); // utf-8ë¡œ ì¸ì½”ë”©
 				string newHash = GenerateHash(csv);
 
 				bool hashMatch = File.Exists(hashPath) && File.ReadAllText(hashPath) == newHash;
 				bool jsonExists = File.Exists(jsonPath);
 
 				if (hashMatch && jsonExists) {
-					Debug.Log($"µ¥ÀÌÅÍ º¯°æ ¾øÀ½! {Path.GetFileName(jsonPath)}");
+					Debug.Log($"ë°ì´í„° ë³€ê²½ ì—†ìŒ! {Path.GetFileName(jsonPath)}");
 					return false;
 				}
 
 				string json = parser(csv);
 
-				File.WriteAllText(hashPath, newHash); // »õ·Î¿î ÇØ½Ã°ª µ¤¾î¾²±â
-				Debug.Log($"{sheetName} ÇØ½Ã°ª º¯°æ ¿Ï·á");
+				File.WriteAllText(hashPath, newHash); // ìƒˆë¡œìš´ í•´ì‹œê°’ ë®ì–´ì“°ê¸°
+				Debug.Log($"{sheetName} í•´ì‹œê°’ ë³€ê²½ ì™„ë£Œ");
 				return true;
 			}
 
 		} catch (Exception e) {
-			Debug.LogError($"µ¥ÀÌÅÍ ´Ù¿î·Îµå ½ÇÆĞ {sheetName}: {e.Message}");
+			Debug.LogError($"ë°ì´í„° ë‹¤ìš´ë¡œë“œ ì‹¤íŒ¨ {sheetName}: {e.Message}");
 			return false;
 		}
 	}
 
 	/// <summary>
-	/// csv ³»¿ëÀ¸·Î »õ·Î¿î Hash°ª »ı¼ºÇÏ´Â ÇÔ¼ö
+	/// csv ë‚´ìš©ìœ¼ë¡œ ìƒˆë¡œìš´ Hashê°’ ìƒì„±í•˜ëŠ” í•¨ìˆ˜
 	/// </summary>
 	private static string GenerateHash(string csv)
 	{
@@ -82,7 +89,7 @@ public class DataGenerationManager
 		string[] lines = arg.Split('\n');
 
 		for (int i = 1; i < lines.Length; i++) {
-			string[] cols = lines[i].Split(','); // csv´Â ,·Î ºĞ¸®µÊ
+			string[] cols = lines[i].Split(','); // csvëŠ” ,ë¡œ ë¶„ë¦¬ë¨
 			ItemData fullData = new ItemData
 			{
 				itemID = Clean(cols[0]),
@@ -97,7 +104,7 @@ public class DataGenerationManager
 
 		File.WriteAllText(_itemJsonPath, JsonUtility.ToJson(new ItemArrayWrapper { items = fullList }, true), new UTF8Encoding(true));
 
-		return JsonUtility.ToJson(new ItemArrayWrapper { items = fullList }, true); // json µ¥ÀÌÅÍ return
+		return JsonUtility.ToJson(new ItemArrayWrapper { items = fullList }, true); // json ë°ì´í„° return
 	}
 
 	private static string ParseProductionCSV(string arg)
@@ -106,7 +113,7 @@ public class DataGenerationManager
 		string[] lines = arg.Split('\n');
 
 		for (int i = 1; i < lines.Length; i++) {
-			string[] cols = lines[i].Split(','); // csv´Â ,·Î ºĞ¸®µÊ
+			string[] cols = lines[i].Split(','); // csvëŠ” ,ë¡œ ë¶„ë¦¬ë¨
 			ProductionData fullData = new ProductionData
 			{
 				ProductionId = Clean(cols[0]),
@@ -134,13 +141,46 @@ public class DataGenerationManager
 
 		File.WriteAllText(_productionJsonPath, JsonUtility.ToJson(new ProductionArrayWrapper { products = fullList }, true), new UTF8Encoding(true));
 
-		return JsonUtility.ToJson(new ProductionArrayWrapper { products = fullList }, true); // json µ¥ÀÌÅÍ return
+		return JsonUtility.ToJson(new ProductionArrayWrapper { products = fullList }, true); // json ë°ì´í„° return
+	}
+
+	private static string ParseUserCSV(string arg)
+	{
+		List<UserData> fullList = new List<UserData>();
+		string[] lines = arg.Split('\n');
+
+		for (int i = 1; i < lines.Length; i++) {
+			string[] cols = lines[i].Split(','); // csvëŠ” ,ë¡œ ë¶„ë¦¬ë¨
+			UserData fullData = new UserData
+			{
+				userId = SafeParseInt(Clean(cols[0])),
+				coin = SafeParseInt(Clean(cols[1])),
+				crystal = SafeParseInt(Clean(cols[2])),
+				stocks = new List<StockInfo>(),
+
+			};
+
+			// @@@@@ ì„ì‹œë¡œ ì¸ë²¤ì°½ ë‘ê°œë§Œ í…ŒìŠ¤íŠ¸
+			if (!string.IsNullOrWhiteSpace(Clean(cols[3]))) {
+				fullData.stocks.Add(new StockInfo { itemId = Clean(cols[3]), amount = SafeParseInt(cols[4]) });
+			}
+			if (!string.IsNullOrWhiteSpace(Clean(cols[5]))) {
+				fullData.stocks.Add(new StockInfo { itemId = Clean(cols[5]), amount = SafeParseInt(cols[6]) });
+			}
+
+			fullList.Add(fullData);
+
+		}
+
+		File.WriteAllText(_userJsonPath, JsonUtility.ToJson(new UserArrayWrapper { users = fullList }, true), new UTF8Encoding(true));
+
+		return JsonUtility.ToJson(new UserArrayWrapper { users = fullList }, true); // json ë°ì´í„° return
 	}
 
 	public static void GenerateItemIdClass()
 	{
 		if (!File.Exists(_itemJsonPath)) {
-			Debug.LogError($"Json ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù {_itemJsonPath}");
+			Debug.LogError($"Json íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤ {_itemJsonPath}");
 			return;
 		}
 
@@ -148,14 +188,14 @@ public class DataGenerationManager
 		ItemArrayWrapper data = JsonUtility.FromJson<ItemArrayWrapper>(json);
 
 		if (data == null || data.items == null) {
-			Debug.LogError($"Json ÆÄ½Ì ½ÇÆĞ {_itemJsonPath}");
+			Debug.LogError($"Json íŒŒì‹± ì‹¤íŒ¨ {_itemJsonPath}");
 			return;
 		}
 
 		StringBuilder sb = new StringBuilder();
 		sb.AppendLine($"/// <summary>");
-		sb.AppendLine($"/// ÀÚµ¿ »ı¼ºµÈ ¾ÆÀÌÅÛ Id »ó¼ö ¸ñ·Ï");
-		sb.AppendLine($"/// ItemId.RollCakeWood ·Î Á¢±Ù °¡´É");
+		sb.AppendLine($"/// ìë™ ìƒì„±ëœ ì•„ì´í…œ Id ìƒìˆ˜ ëª©ë¡");
+		sb.AppendLine($"/// ItemId.RollCakeWood ë¡œ ì ‘ê·¼ ê°€ëŠ¥");
 		sb.AppendLine($"/// </summary>");
 		sb.AppendLine($"public static class ItemId");
 		sb.AppendLine("{");
@@ -166,11 +206,11 @@ public class DataGenerationManager
 
 			string key = ToPascalCase(item.itemID);
 			if (!keys.Add(key)) {
-				Debug.LogError($"Áßº¹µÈ Å° {key}");
+				Debug.LogError($"ì¤‘ë³µëœ í‚¤ {key}");
 				continue;
 			}
 
-			// public const string rollCakeWood = "roll_cake_wood"; ¸¦ ÀÛ¼ºÇÏ´Â ºÎºĞ
+			// public const string rollCakeWood = "roll_cake_wood"; ë¥¼ ì‘ì„±í•˜ëŠ” ë¶€ë¶„
 			sb.AppendLine($"	public const string {key} = \"{item.itemID}\";");
 		}
 
@@ -186,13 +226,13 @@ public class DataGenerationManager
 		sb.AppendLine("}");
 		
 		File.WriteAllText(_itemScriptPath, sb.ToString(), Encoding.UTF8);
-		Debug.Log($"ItemId.cs »ı¼º ¿Ï·á");
+		Debug.Log($"ItemId.cs ìƒì„± ì™„ë£Œ");
 	}
 
 	public static void GenerateProductionIdClass()
 	{
 		if (!File.Exists(_productionJsonPath)) {
-			Debug.LogError($"Json ÆÄÀÏÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù {_productionJsonPath}");
+			Debug.LogError($"Json íŒŒì¼ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤ {_productionJsonPath}");
 			return;
 		}
 
@@ -200,14 +240,14 @@ public class DataGenerationManager
 		ProductionArrayWrapper data = JsonUtility.FromJson<ProductionArrayWrapper>(json);
 
 		if (data == null || data.products == null) {
-			Debug.LogError($"Json ÆÄ½Ì ½ÇÆĞ {_productionJsonPath}");
+			Debug.LogError($"Json íŒŒì‹± ì‹¤íŒ¨ {_productionJsonPath}");
 			return;
 		}
 
 		StringBuilder sb = new StringBuilder();
 		sb.AppendLine($"/// <summary>");
-		sb.AppendLine($"/// ÀÚµ¿ »ı¼ºµÈ ¾ÆÀÌÅÛ Id »ó¼ö ¸ñ·Ï");
-		sb.AppendLine($"/// ProductionId.roll_cake_wood_bundle ·Î Á¢±Ù °¡´É");
+		sb.AppendLine($"/// ìë™ ìƒì„±ëœ ì•„ì´í…œ Id ìƒìˆ˜ ëª©ë¡");
+		sb.AppendLine($"/// ProductionId.roll_cake_wood_bundle ë¡œ ì ‘ê·¼ ê°€ëŠ¥");
 		sb.AppendLine($"/// </summary>");
 		sb.AppendLine($"public static class ProductionId");
 		sb.AppendLine("{");
@@ -218,11 +258,11 @@ public class DataGenerationManager
 
 			string key = ToPascalCase(production.ProductionId);
 			if (!keys.Add(key)) {
-				Debug.LogError($"Áßº¹µÈ Å° {key}");
+				Debug.LogError($"ì¤‘ë³µëœ í‚¤ {key}");
 				continue;
 			}
 
-			// public const string rollCakeWood = "roll_cake_wood"; ¸¦ ÀÛ¼ºÇÏ´Â ºÎºĞ
+			// public const string rollCakeWood = "roll_cake_wood"; ë¥¼ ì‘ì„±í•˜ëŠ” ë¶€ë¶„
 			sb.AppendLine($"	public const string {key} = \"{production.ProductionId}\";");
 		}
 
@@ -238,7 +278,7 @@ public class DataGenerationManager
 		sb.AppendLine("}");
 
 		File.WriteAllText(_productionScriptPath, sb.ToString(), Encoding.UTF8);
-		Debug.Log($"ProductionId.cs »ı¼º ¿Ï·á");
+		Debug.Log($"ProductionId.cs ìƒì„± ì™„ë£Œ");
 	}
 
 	private static string ToPascalCase(string str)
@@ -250,14 +290,17 @@ public class DataGenerationManager
 		return string.Join("", parts);
 	}
 
-	// °ø¹é°ú " Á¦°Å
+	// ê³µë°±ê³¼ " ì œê±°
 	private static string Clean(string str) => str.Trim().Trim('"');
 	private static int SafeParseInt(string str, int defaultValue = 0) => int.TryParse(str, out int result) ? result : defaultValue;
 }
 
-// UnityÀÇ JsonUtility´Â Å¬·¡½º¿Í ±¸Á¶Ã¼ÀÇ ÇÊµå¸¸ Á÷·ÄÈ­ ´ë»óÀ¸·Î º¸±â ¶§¹®¿¡ °¨½ÎÁàÇÔ.
+// Unityì˜ JsonUtilityëŠ” í´ë˜ìŠ¤ì™€ êµ¬ì¡°ì²´ì˜ í•„ë“œë§Œ ì§ë ¬í™” ëŒ€ìƒìœ¼ë¡œ ë³´ê¸° ë•Œë¬¸ì— ê°ì‹¸ì¤˜í•¨.
 [System.Serializable]
 public class ItemArrayWrapper { public List<ItemData> items; }
 
 [System.Serializable]
 public class ProductionArrayWrapper { public List<ProductionData> products; }
+
+[System.Serializable]
+public class UserArrayWrapper { public List<UserData> users; }

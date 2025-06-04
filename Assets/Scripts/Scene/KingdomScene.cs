@@ -2,6 +2,7 @@
 
 public class KingdomScene : BaseScene
 {
+	[SerializeField] private int uid;
 	protected override void Init()
 	{
 		base.Init();
@@ -13,5 +14,7 @@ public class KingdomScene : BaseScene
 		ItemDatabase.LoadJSON();
 		ProductionDatabase.LoadJSON();
 		BuildingDatabase.LoadSO();
+		PlayerPrefs.SetInt("uid", uid);
+		UserDatabase.LoadJSON(uid);
 	}
 }

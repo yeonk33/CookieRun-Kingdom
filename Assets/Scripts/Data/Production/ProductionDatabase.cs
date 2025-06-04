@@ -31,7 +31,7 @@ public static class ProductionDatabase
 	public static ProductionData Get(string id)
 	{
 		if (productionMap.TryGetValue(id, out var data)) {
-			Debug.Log($"{id}, {data.ProductionId}");
+			//Debug.Log($"{id}, {data.ProductionId}");
 			return data;
 		} else return null;
 	}

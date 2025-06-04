@@ -1,0 +1,64 @@
+﻿{
+    "users": [
+        {
+            "userId": 1,
+            "coin": 50000,
+            "crystal": 3000,
+            "stocks": [
+                {
+                    "itemId": "roll_cake_wood",
+                    "amount": 0
+                },
+                {
+                    "itemId": "sugar_cube",
+                    "amount": 0
+                }
+            ]
+        },
+        {
+            "userId": 2,
+            "coin": 1000,
+            "crystal": 3000,
+            "stocks": [
+                {
+                    "itemId": "roll_cake_wood",
+                    "amount": 0
+                },
+                {
+                    "itemId": "sugar_cube",
+                    "amount": 0
+                }
+            ]
+        },
+        {
+            "userId": 3,
+            "coin": 1000,
+            "crystal": 3000,
+            "stocks": [
+                {
+                    "itemId": "roll_cake_wood",
+                    "amount": 0
+                },
+                {
+                    "itemId": "sugar_cube",
+                    "amount": 0
+                }
+            ]
+        },
+        {
+            "userId": 4,
+            "coin": 1000,
+            "crystal": 3000,
+            "stocks": [
+                {
+                    "itemId": "roll_cake_wood",
+                    "amount": 0
+                },
+                {
+                    "itemId": "sugar_cube",
+                    "amount": 0
+                }
+            ]
+        }
+    ]
+}
