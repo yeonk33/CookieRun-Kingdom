@@ -862,7 +862,7 @@ GameObject:
   - component: {fileID: 935660930}
   - component: {fileID: 935660929}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: UIController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2241,7 +2241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8573385977980106069, guid: a23fd6e10e0698c4b8a685edfe4ba35c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000023550695
+      value: 0.00007612715
       objectReference: {fileID: 0}
     - target: {fileID: 8876269847229604089, guid: a23fd6e10e0698c4b8a685edfe4ba35c, type: 3}
       propertyPath: m_Size
