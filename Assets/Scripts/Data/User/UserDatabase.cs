@@ -40,7 +40,7 @@ public static class UserDatabase
 			return false;
 		}
 
-		uidUser.stocks.Add()
+		//uidUser.stocks.Add();
 
 		return true;
 	}

@@ -20,8 +20,8 @@ public class CreateBuilding : MonoBehaviour
 
 		var data = BuildingDatabase.Get(id);
 		GameObject go = GameObject.Instantiate(prefab); // prefab을 복사 생성한 후 정보 수정
-		var pb = go.GetOrAddComponent<ProductionBuilding>();
-		pb.SetBuildingData(id, level);
+		var pb = go.GetOrAddComponent<ProduceBuilding>();
+		pb.SetBuildingData(data, level);
 		//GameObject.Instantiate(go);
 	}
 }

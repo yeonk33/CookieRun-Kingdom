@@ -25,8 +25,10 @@ public class ProductionPanel : MonoBehaviour
 	
 	private bool _isProducting = false;
 	private DateTime _endTime;
+	private string _productingId;
+	private int _productingCount;
 
-	public void OpenPanel(BuildingData data, int lv)
+	public void OpenPanel(BuildingData data, int lv, ProduceBuilding building)
 	{
 		if (gameObject.activeSelf) {
 			this.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -47,8 +49,9 @@ public class ProductionPanel : MonoBehaviour
 			GameObject go = Instantiate(goodsUI, _contentRoot);
 			var production = ProductionDatabase.Get(productionsId[i]);
 			var ui = go.GetOrAddComponent<GoodsPanelUI>();
+			ui.Init(data.buildingId, building);
 
-			ui.ProductionId = b.productions[i];
+            ui.ProductionId = b.productions[i];
 			go.SetActive(true);
 			//ui.DisplayName.text = production.displayName;
 			//ui.GoodsImage.sprite = production.iconSprite;
@@ -71,7 +74,9 @@ public class ProductionPanel : MonoBehaviour
 		_listImage.sprite = production.iconSprite;
 		_listTime.text = production.timeCost.ToString() + "초";
 		_endTime = DateTime.UtcNow.AddSeconds(production.timeCost);
-		Debug.Log($"{production.displayName} {_endTime}에 생산 완료.");
+        _productingId = production.ProductionId;
+        _productingCount = production.outputItemAmout;
+        Debug.Log($"{production.displayName} {_endTime}에 생산 완료.");
 		PlayerPrefs.SetString("endTime", _endTime.ToString());
 		PlayerPrefs.Save();
 		_isProducting = true;
@@ -86,7 +91,7 @@ public class ProductionPanel : MonoBehaviour
 			_listTime.text = Mathf.CeilToInt((float)remainTime.TotalSeconds).ToString() + "초";
 		} else {
 			Debug.Log("생산 완료");
-			// Inventory.Add(production, amount); // @@@@@@ 추가예정
+			 Inventory.Add(_productingId, _productingCount); // @@@@@@ 추가예정
 			_listImage.sprite = null;
 			_listTime.text = null;
 			_isProducting = false;
