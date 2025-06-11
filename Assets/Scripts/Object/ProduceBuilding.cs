@@ -47,16 +47,21 @@ public class ProduceBuilding : MonoBehaviour
         }
     }
 
-    public void PickupItems() // 생산 완료된 것들 수거
+    public List<ProduceInfo> PickupItems() // 생산 완료된 것들 수거
     {
-        foreach (var item in ProduceList)
+        var returnList = new List<ProduceInfo>();
+
+        for (int i = 0; i < ProduceList.Count; i++)
         {
+            var item = ProduceList[i];
             if (item.isComplete) // 생산 완료
             {
                 var production = ProductionDatabase.Get(item.productionId);
-                Inventory.Add(production.outputItemId, production.outputItemAmout); // 아이템 추가, 1개씩 추가한다고 가정
-                Debug.Log($"수거 완료: {production.displayName} x {production.outputItemAmout}");
+                //Inventory.Add(production.outputItemId, production.outputItemAmout); // 아이템 추가, 1개씩 추가한다고 가정
+                //Debug.Log($"수거 완료: {production.displayName} x {production.outputItemAmout}");
+                returnList.Add(item); // 수거된 아이템 리스트에 추가
                 ProduceList.Remove(item);
+                i--;
                 // @@@@@ UI 수거 알림
 
             }
@@ -64,6 +69,8 @@ public class ProduceBuilding : MonoBehaviour
 
         _curIndex = 0; // 수거 후 인덱스 초기화
         if (ProduceList.Count == 0) ProduceManager.UnregistBuilding(InstanceId); // 전부 생산 완료면 건물 Unregist
+        
+        return returnList; // 수거된 아이템 리스트 반환
     }
 
     public void RegistProduce(string productionId)

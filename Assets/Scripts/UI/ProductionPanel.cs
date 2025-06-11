@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using TMPro;
 using Unity.VisualScripting;
@@ -20,15 +21,46 @@ public class ProductionPanel : MonoBehaviour
 	[SerializeField] private TMP_Text _displayName;
 	[SerializeField] private Image _image;
 	[SerializeField] private Transform _contentRoot;
-	[SerializeField] private Image _listImage; // @@@@@ 나중에 LIst<>에 담기
-	[SerializeField] private TMP_Text _listTime;// @@@@@ 나중에 LIst<>에 담기
-	
-	private bool _isProducting = false;
-	private DateTime _endTime;
-	private string _productingId;
-	private int _productingCount;
+	[SerializeField] private List<Image> _listImage;
+	[SerializeField] private List<TMP_Text> _listTime;
+	[SerializeField] private GameObject _listBtnRoot;
 
-	public void OpenPanel(BuildingData data, int lv, ProduceBuilding building)
+    private bool _isProducting = false;
+	private ProduceBuilding _currentBuilding; // 현재 건물
+
+	private void OnEnable()
+	{
+		ProduceManager.OnProduceListUpdated -= ProduceManager_OnProduceListUpdated;
+		ProduceManager.OnProduceListUpdated += ProduceManager_OnProduceListUpdated;
+		var btns = _listBtnRoot.GetComponentsInChildren<Button>(true);
+		foreach (var btn in btns)
+		{
+			btn.onClick.AddListener(() =>
+			{
+				ProduceManager.PickupItem(_currentBuilding.InstanceId); // 생산품 수거
+            });
+		}
+	}
+
+    private void OnDisable()
+    {
+        ProduceManager.OnProduceListUpdated -= ProduceManager_OnProduceListUpdated;
+    }
+
+    private void ProduceManager_OnProduceListUpdated()
+    {
+        ClearListUI();
+        for (int i = 0; i < _currentBuilding.ProduceList.Count; i++)
+        {
+            _listImage[i].sprite = ProductionDatabase.Get(_currentBuilding.ProduceList[i].productionId).iconSprite;
+            float remain = Utils.GetRemainTime(_currentBuilding.ProduceList[i].endTime);
+            _listTime[i].text = remain > 0 ? remain.ToString() + "초" : "생산완료";
+        }
+		if (_currentBuilding.ProduceList.Count != 0 && _currentBuilding.ProduceList.Last<ProduceInfo>().isComplete) _isProducting = false;
+		else _isProducting = true; // 생산 중인 상태인지 확인
+    }
+
+    public void OpenPanel(BuildingData data, int lv, ProduceBuilding building)
 	{
 		if (gameObject.activeSelf) {
 			this.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
@@ -38,9 +70,10 @@ public class ProductionPanel : MonoBehaviour
 
 		_displayName.text = data.displayName;
 		_image.sprite = data.icon;
+		_currentBuilding = building; // 현재 선택된 건물 정보
 
-		// 데이터
-		var b = data.buildingLevels.Find(x => x.level == lv);
+        // 데이터
+        var b = data.buildingLevels.Find(x => x.level == lv);
 		List<string> productionsId = b.productions;
 		var goodsUI = Resources.Load<GameObject>("Prefabs/GoodsPanel");
 
@@ -53,48 +86,31 @@ public class ProductionPanel : MonoBehaviour
 
             ui.ProductionId = b.productions[i];
 			go.SetActive(true);
-			//ui.DisplayName.text = production.displayName;
-			//ui.GoodsImage.sprite = production.iconSprite;
-			//ui.SmallImage.sprite = production.iconSprite;
-			//ui.Amount.text = "X " + production.outputItemAmout.ToString();
-			//ui.Cost.text = production.coinCost.ToString();
-			//ui.Time.text = production.timeCost.ToString() + "초";
-			
 		}
 
 		// 스크롤뷰
 		var scroll = this.GetComponentInChildren<CustomScrollView>();
 		var layout = new ScrollLine(goodsUI.GetComponent<RectTransform>().rect.height);
 		scroll.Init(layout, productionsId.Count, goodsUI);
-	}
 
-	public void Enqueue(ProductionData production)
+		// 생산 대기열 그리기
+		ProduceManager_OnProduceListUpdated();
+    }
+
+	private void ClearListUI()
 	{
-		if (_isProducting) { Debug.Log("생산대기열이 꽉찼습니다."); return; } // @@@@ text로 화면에 띄우기
-		_listImage.sprite = production.iconSprite;
-		_listTime.text = production.timeCost.ToString() + "초";
-		_endTime = DateTime.UtcNow.AddSeconds(production.timeCost);
-        _productingId = production.ProductionId;
-        _productingCount = production.outputItemAmout;
-        Debug.Log($"{production.displayName} {_endTime}에 생산 완료.");
-		PlayerPrefs.SetString("endTime", _endTime.ToString());
-		PlayerPrefs.Save();
-		_isProducting = true;
-	}
+		foreach (var img in _listImage) {
+			img.sprite = null;
+		}
+		foreach (var txt in _listTime) {
+			txt.text = null;
+        }
+    }
 
 	private void Update()
 	{
 		if (!_isProducting) { return; }
 
-		var remainTime = _endTime - DateTime.UtcNow;
-		if (remainTime.TotalSeconds > 0) {
-			_listTime.text = Mathf.CeilToInt((float)remainTime.TotalSeconds).ToString() + "초";
-		} else {
-			Debug.Log("생산 완료");
-			 Inventory.Add(_productingId, _productingCount); // @@@@@@ 추가예정
-			_listImage.sprite = null;
-			_listTime.text = null;
-			_isProducting = false;
-		}
-	}
+		ProduceManager_OnProduceListUpdated();
+    }
 }

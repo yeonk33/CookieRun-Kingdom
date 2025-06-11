@@ -8,7 +8,9 @@ public class InventoryUI : MonoBehaviour
 {
     public ItemCategory _category = ItemCategory.All;
 
+    public CustomScrollView ScrollView;     // 에디터에서 연결
     private List<string> _curCategoryItems = new List<string>();
+
 
     private void OnEnable()
     {
@@ -24,6 +26,10 @@ public class InventoryUI : MonoBehaviour
     private void Start()
     {
         SetCategory(ItemCategory.All);
+        var slot = Resources.Load<GameObject>("Prefabs/Inventory Slot");
+        var size = slot.GetComponent<RectTransform>();
+
+        ScrollView.Init(new ScrollGrid(size.rect.width, size.rect.height, ScrollView.Viewport.rect.width), 10, slot);
     }
 
     private void SetCategory(ItemCategory c)
@@ -66,6 +72,6 @@ public class InventoryUI : MonoBehaviour
 
     private void OnInventoryChanged(string obj)
     {
-
+        ScrollView.RefreshItems(); // 기존 UI 초기화
     }
 }

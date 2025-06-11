@@ -3,9 +3,9 @@ using UnityEngine;
 
 public static class Utils
 {
-    public static float GetRemainTime(DateTime endTime)
+    public static int GetRemainTime(DateTime endTime)
     {
         TimeSpan remaining = endTime - DateTime.UtcNow;
-        return Mathf.Max(0f, (float)remaining.TotalSeconds);
+        return Convert.ToInt32(Mathf.Max(0f, (float)remaining.TotalSeconds));
     }
 }

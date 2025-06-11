@@ -47,6 +47,6 @@ public class GoodsPanelUI : MonoBehaviour
 	{
 		//UIController.Instance.ConsumeCoin(Convert.ToInt32(Cost.text));
 		//ProductionPanel.Instance.Enqueue(_production);
-		ProduceManager.StartProduce(BuildingId, _production.ProductionId, _building);
+		ProduceManager.StartProduce(_building.InstanceId, _production.ProductionId, _building);
     }
 }

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 // 일괄 수거 등을 위한 중앙매니저 관리
 public static class ProduceManager
 {
     // 생산 중인 건물만 담기 <instanceId, ProduceBuilding>
     private static Dictionary<string, ProduceBuilding> _buildings = new Dictionary<string, ProduceBuilding>(); 
+    public static event Action OnProduceListUpdated;
 
     public static ProduceBuilding GetBuilding(string instanceId)
     {
@@ -23,6 +25,7 @@ public static class ProduceManager
         {
             _buildings.Add(instanceId, building);
         }
+        OnProduceListUpdated?.Invoke();
     }
 
     public static void UnregistBuilding(string buildingId)
@@ -31,12 +34,14 @@ public static class ProduceManager
         {
             _buildings.Remove(buildingId);
         }
+        OnProduceListUpdated?.Invoke();
     }
 
     public static void StartProduce(string instanceId, string productionId, ProduceBuilding building) // 생산 시작 (버튼에 연결)
     {
         RegistBuilding(instanceId, building);
         building.StartProduce(productionId); // 건물 생산 대기열 등록
+        OnProduceListUpdated?.Invoke();
     }
 
     public static void PickupItem(string instanceId) // 생산품 수거
@@ -45,9 +50,16 @@ public static class ProduceManager
 
         var building = _buildings[instanceId];
         if (building.ProduceList.Count == 0) return;
-        building.PickupItems();
+        var pickups = building.PickupItems();
 
         if (building.ProduceList.Count == 0) UnregistBuilding(instanceId);
+        OnProduceListUpdated?.Invoke();
+
+        // 인벤토리에 추가
+        for (int i = 0; i < pickups.Count; i++)
+        {
+            Inventory.Add(pickups[i].productionId, pickups[i].count);            
+        }
     }
 
     public static void PickupAllItems() // 모든 생산품 수거
@@ -56,8 +68,6 @@ public static class ProduceManager
         {
             building.PickupItems();
         }
-        
-        // 수거 후 비우기
-        //_buildings.Clear();
+        OnProduceListUpdated?.Invoke();
     }
 }
