@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
+
+/* * CustomScrollView.cs
+ * 
+ * ScrollView에 각 Slot이 어떤 형태 (Line, Grid)로 그려지는지 정의하고, 
+ * Viewport 사이즈에 들어갈 개수만큼만 그리는 클래스
+ */
 
 public class CustomScrollView : MonoBehaviour
 {
@@ -22,7 +25,10 @@ public class CustomScrollView : MonoBehaviour
 	private int _visibleCount = 0;			// 화면에 실제로 보여지는 아이템 개수
 	private int _lastFirstIndex = -1;       // 이전 프레임의 시작 인덱스 (같으면 갱산 X)
 
-	public void Init(IScrollLayout layout, int itemCount, GameObject slotPrefab)
+	public int VisibleCount => _visibleCount;	// 화면에 실제로 보여지는 아이템 개수
+	public List<GameObject> Pool => _pool;		// 재사용 가능한 아이템 풀
+
+    public void Init(IScrollLayout layout, int itemCount, GameObject slotPrefab)
 	{
 		this.layout = layout;
 		this.ItemCount = itemCount;
@@ -36,15 +42,14 @@ public class CustomScrollView : MonoBehaviour
 		}
 
 		for (int i = 0; i < _visibleCount; ++i) {
-			//GameObject item = Instantiate(SlotPrefab, ContentRoot);
-			//var label = item.GetComponentInChildren<TMP_Text>();
-			//if (label != null) label.text = $"item_{i}";
-			//item.SetActive(false);
-			_pool.Add(SlotPrefab);
+            var go = Instantiate(SlotPrefab, ContentRoot);
+            _pool.Add(go);
 		}
-		
 
-		RefreshItems();
+        // 스크롤시 아이템 갱신
+        ScrollRect.onValueChanged.AddListener(_ => RefreshItems());
+
+        RefreshItems();
 	}
 
 	public void RefreshItems()
@@ -71,11 +76,6 @@ public class CustomScrollView : MonoBehaviour
 			// 아이템 위치 LayoutGroup없이 직접 그리기
 			_pool[i].transform.localPosition = layout.GetItemPosition(dataIndex);
 			//Debug.Log($"[{dataIndex}] Pos = {layout.GetItemPosition(dataIndex)}");
-
-			// TODO: slot prefab마다 다르게 해야하는..?
-			//_pool[i].SetData(dataIndex); // 각 slot의 데이터 채워넣기
-
-
-		}
+        }
 	}
 }

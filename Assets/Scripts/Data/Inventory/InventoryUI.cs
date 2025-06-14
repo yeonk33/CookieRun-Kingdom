@@ -16,6 +16,7 @@ public class InventoryUI : MonoBehaviour
     {
         Inventory.OnChanged -= OnInventoryChanged;
         Inventory.OnChanged += OnInventoryChanged;
+        Refresh();
     }
 
     private void OnDisable()
@@ -23,13 +24,14 @@ public class InventoryUI : MonoBehaviour
         Inventory.OnChanged -= OnInventoryChanged;
     }
 
-    private void Start()
+    private void Awake()
     {
-        SetCategory(ItemCategory.All);
         var slot = Resources.Load<GameObject>("Prefabs/Inventory Slot");
         var size = slot.GetComponent<RectTransform>();
+        //ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width), Inventory.GetTotalCount(), slot);
+        ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width), 400, slot); // 테스트용
+        SetCategory(ItemCategory.All);
 
-        ScrollView.Init(new ScrollGrid(size.rect.width, size.rect.height, ScrollView.Viewport.rect.width), 10, slot);
     }
 
     private void SetCategory(ItemCategory c)
@@ -51,12 +53,12 @@ public class InventoryUI : MonoBehaviour
     private void UpdateUI()
     {
         // custom scroll view 사용
-
+        OnInventoryChanged("");
     }
 
     private List<string> ApplyCategory(IEnumerable<string> allItems)
     {
-        List<string> result = new List<string>();
+        List<string> result = new List<string>(); // 현재 카테고리에 해당하는 itemId 담을 리스트
 
         foreach (var itemId in allItems)
         {
@@ -72,6 +74,27 @@ public class InventoryUI : MonoBehaviour
 
     private void OnInventoryChanged(string obj)
     {
-        ScrollView.RefreshItems(); // 기존 UI 초기화
+        ScrollView.RefreshItems(); // Slot 다시 그리기
+
+        for (int i = 0; i < _curCategoryItems.Count; ++i)
+        {
+            var itemID = _curCategoryItems[i];
+
+            IInventorySlot slot = null;
+            if (i < ScrollView.VisibleCount)
+                slot = ScrollView.Pool[i].GetComponent<IInventorySlot>();  // 재활용
+            else
+                Debug.LogWarning("Not enough slots in the pool!"); // 풀에 아이템이 부족할 경우 경고
+                //slot = Instantiate(, _slotRoot).GetComponent<IInventorySlot>();
+
+            slot.SetData(itemID);
+
+            //_itemSlots[itemID] = slot;
+        }
+
+        //for (int i = _curCategoryItems.Count; i < _slotRoot.childCount; ++i)
+        //{
+        //    _slotRoot.GetChild(i).gameObject.SetActive(false);  // 재활용 안한 애들 비활성화
+        //}
     }
 }

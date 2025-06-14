@@ -2,14 +2,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventorySlotUI : MonoBehaviour
+public class InventorySlotUI : MonoBehaviour, IInventorySlot
 {
     [SerializeField] private Image _item;
     [SerializeField] private TMP_Text _amountTxt;
 
-    public void SetUI(string imgPath, int amount)
+    public void SetData(string itemId)
     {
-        _item.sprite = Resources.Load<Sprite>(imgPath);
-        _amountTxt.text = string.Format("{0:#,###}", amount);
+        var item = ProductionDatabase.Get(itemId);
+        _item.sprite = Resources.Load<Sprite>($"Data/Icon/{item.iconPath}");
+        _amountTxt.text = string.Format("{0:#,###}", Inventory.GetCount(itemId));
     }
 }

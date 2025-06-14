@@ -16,7 +16,7 @@ public class ScrollGrid : IScrollLayout
 			this._column = Mathf.Max(this._column, 1);
 		} else
 			this._column = c;
-		Debug.Log($"[ScrollGrid] viewWidth: {viewWidth}, itemWidth: {_itemWidth}, column: {_column}");
+		//Debug.Log($"[ScrollGrid] viewWidth: {viewWidth}, itemWidth: {_itemWidth}, column: {_column}");
 	}
 
 	public Vector2 GetItemPosition(int index)

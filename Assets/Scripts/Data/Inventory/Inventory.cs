@@ -47,4 +47,5 @@ public static class Inventory
     }
 
     public static IEnumerable<string> GetAll() => _items.Keys;
+    public static int GetTotalCount() => _items.Count;
 }

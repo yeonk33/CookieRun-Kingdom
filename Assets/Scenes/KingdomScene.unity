@@ -1373,67 +1373,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118988594}
   m_CullTransparentMesh: 1
---- !u!1 &1179556795
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1179556797}
-  - component: {fileID: 1179556796}
-  m_Layer: 0
-  m_Name: ScrollTest
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1179556796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1179556795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d6d8c94b1705646aa85082c038eb15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScrollView: {fileID: 1218096794}
-  ContentRoot: {fileID: 1403523674}
-  _itemCount: 50
-  _itemPrefab: {fileID: 50115908419915164, guid: 19d3d209c8bedc34393210756971a06b, type: 3}
-  ItemWidth: 90
-  ItemHeight: 60
---- !u!4 &1179556797
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1179556795}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1266, y: 585, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1218096794 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5660492223188625651, guid: 86f7ea6393decdc48a7715481e24d236, type: 3}
-  m_PrefabInstance: {fileID: 1820365545225682913}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cea2ee6db90a52d4bad97753130aac31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1223207926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,6 +1486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProductionId: 
   BuildingId: 
+  ProduceButton: {fileID: 0}
   DisplayName: {fileID: 0}
   GoodsImage: {fileID: 0}
   SmallImage: {fileID: 0}
@@ -1631,11 +1571,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
---- !u!224 &1403523674 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3365913573589372627, guid: 86f7ea6393decdc48a7715481e24d236, type: 3}
-  m_PrefabInstance: {fileID: 1820365545225682913}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1604405036
 GameObject:
   m_ObjectHideFlags: 0
@@ -2527,7 +2462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8573385977980106069, guid: a23fd6e10e0698c4b8a685edfe4ba35c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000014916681
+      value: -0.00015079975
       objectReference: {fileID: 0}
     - target: {fileID: 8793785283747310688, guid: a23fd6e10e0698c4b8a685edfe4ba35c, type: 3}
       propertyPath: m_Value
@@ -2808,8 +2743,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2591041945727597135, guid: a0340c133f80e264fb434c8987e3e6cd, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2591041945727597135, guid: a0340c133f80e264fb434c8987e3e6cd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2591041945727597135, guid: a0340c133f80e264fb434c8987e3e6cd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000022373004
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3323985904838307811, guid: a0340c133f80e264fb434c8987e3e6cd, type: 3}
       propertyPath: m_Size
@@ -2860,6 +2803,5 @@ SceneRoots:
   - {fileID: 1223207928}
   - {fileID: 1830678737}
   - {fileID: 490017261}
-  - {fileID: 1179556797}
   - {fileID: 935660930}
   - {fileID: 1927237546}
