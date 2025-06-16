@@ -9,6 +9,8 @@ public class InventoryUI : MonoBehaviour
     public ItemCategory _category = ItemCategory.All;
 
     public CustomScrollView ScrollView;     // 에디터에서 연결
+    public float SpaceX = 10f;
+    public float SpaceY = 10f;
     private List<string> _curCategoryItems = new List<string>();
 
 
@@ -29,7 +31,7 @@ public class InventoryUI : MonoBehaviour
         var slot = Resources.Load<GameObject>("Prefabs/Inventory Slot");
         var size = slot.GetComponent<RectTransform>();
         //ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width), Inventory.GetTotalCount(), slot);
-        ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width), 400, slot); // 테스트용
+        ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width, SpaceX, SpaceY), 400, slot); // 테스트용
         SetCategory(ItemCategory.All);
 
     }

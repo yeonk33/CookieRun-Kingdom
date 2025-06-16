@@ -5,13 +5,17 @@ public class ScrollGrid : IScrollLayout
 	private int _column;
 	private float _itemWidth;
 	private float _itemHeight;
+	private float _spaceX;
+	private float _spaceY;
 
-	public ScrollGrid(float w, float h, float viewWidth, int c = 0)
+	public ScrollGrid(float w, float h, float viewWidth, float spaceX = 10f, float spaceY = 10f, int c = 0)
 	{
 		this._itemWidth = w;
 		this._itemHeight = h;
+		this._spaceX = spaceX;
+		this._spaceY = spaceY;
 
-		if (c == 0) {
+        if (c == 0) {
 			this._column = Mathf.FloorToInt(viewWidth / w);
 			this._column = Mathf.Max(this._column, 1);
 		} else
@@ -23,13 +27,13 @@ public class ScrollGrid : IScrollLayout
 	{
 		int row = index / _column;
 		int col = index % _column;
-		return new Vector2(col * _itemWidth, -row * _itemHeight);
+		return new Vector2(col * (_itemWidth + _spaceX), -row * (_itemHeight + _spaceY));
 	}
 
 	public Vector2 GetContentSize(int itemCount)
 	{
 		int rows = Mathf.CeilToInt((float)itemCount / _column);
-		return new Vector2(0, rows * _itemHeight);
+		return new Vector2(0, rows * (_itemHeight + _spaceY));
 	}
 
 
