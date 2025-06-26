@@ -15,7 +15,7 @@ public class CustomScrollView : MonoBehaviour
 	public RectTransform ContentRoot;	// 아이템들 담을 영역
 	public ScrollRect ScrollRect;       // 스크롤 영역에 붙은 컴포넌트
 
-	public int ItemCount = 2000;		// 전체 개수
+	public int ItemCount;				// 전체 Slot 개수
 	public float ItemWidth;				// 아이템 하나 너비
 	public float ItemHeight;			// 아이템 하나 높이
 	public int BufferCount = 10;		// 추가로 생성할 버퍼 아이템 개수

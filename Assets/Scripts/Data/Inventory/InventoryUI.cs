@@ -82,9 +82,9 @@ public class InventoryUI : MonoBehaviour
         {
             var itemID = _curCategoryItems[i];
 
-            IInventorySlot slot = null;
+            IScrollSlot slot = null;
             if (i < ScrollView.VisibleCount)
-                slot = ScrollView.Pool[i].GetComponent<IInventorySlot>();  // 재활용
+                slot = ScrollView.Pool[i].GetComponent<IScrollSlot>();  // 재활용
             else
                 Debug.LogWarning("Not enough slots in the pool!"); // 풀에 아이템이 부족할 경우 경고
                 //slot = Instantiate(, _slotRoot).GetComponent<IInventorySlot>();

@@ -53,13 +53,13 @@ public static class ProduceManager
         var pickups = building.PickupItems();
 
         if (building.ProduceList.Count == 0) UnregistBuilding(instanceId);
-        OnProduceListUpdated?.Invoke();
 
         // 인벤토리에 추가
         for (int i = 0; i < pickups.Count; i++)
         {
             Inventory.Add(pickups[i].productionId, pickups[i].count);            
         }
+        OnProduceListUpdated?.Invoke();
     }
 
     public static void PickupAllItems() // 모든 생산품 수거
