@@ -16,5 +16,6 @@ public class KingdomScene : BaseScene
 		BuildingDatabase.LoadSO();
 		PlayerPrefs.SetInt("uid", uid);
 		UserDatabase.LoadJSON(uid);
+		BuildingPlacementManager.Instance.LoadAll();
 	}
 }

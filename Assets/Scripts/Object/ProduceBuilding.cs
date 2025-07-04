@@ -7,10 +7,14 @@ using UnityEngine;
 
 public class ProduceBuilding : MonoBehaviour
 {
+    public string BuildingId => _data.buildingId; // 건물 ID
     public string InstanceId { get; private set; } // 같은 건물 여러개일 때 구분용
     public int Level { get; private set; } // 건물 레벨
-    private BuildingData _data; // 건물 SO
     public List<ProduceInfo> ProduceList { get; private set; } // 생산 대기열
+    public Vector3Int CellPos { get; set; } // 타일맵 좌표
+
+
+    private BuildingData _data; // 건물 SO
     private int _curIndex = 0; // 현재 생산 중인 아이템 인덱스
 
     /// <summary>

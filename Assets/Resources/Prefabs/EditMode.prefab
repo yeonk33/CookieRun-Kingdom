@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2158157016471913915}
   - component: {fileID: 6894752335630664557}
+  - component: {fileID: 4604485815699992552}
   m_Layer: 0
   m_Name: EditMode
   m_TagString: Untagged
@@ -46,3 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 0}
   isEditMode: 1
+--- !u!114 &4604485815699992552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752842427691159664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc71a02457ee854d8ecc9e7551ea917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

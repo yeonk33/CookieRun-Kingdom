@@ -48,9 +48,26 @@ public class EditModeController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space)) // 설치
         {
-            Debug.Log("건물 설치!");
-            isEditMode = false;
-            _object = null;
+            Vector3Int cell = CalculateCellPos();
+
+            if (!BuildingPlacementManager.Instance.IsCellOccupied(cell))
+            {
+                var produceBuilding = _object.GetComponent<ProduceBuilding>();
+                produceBuilding.CellPos = cell;
+
+                BuildingPlacementManager.Instance.RegisterBuilding(produceBuilding);
+
+                BuildingPlacementManager.Instance.SaveAll();
+                isEditMode = false;
+                _object = null;
+            }
+            else
+            {
+                Debug.Log("이미 건물이 있음!");
+            }
+            //Debug.Log("건물 설치!");
+            //isEditMode = false;
+            //_object = null;
         }
 
         if (CalculateCellPos() == _lastCell || !isEditMode) return;
