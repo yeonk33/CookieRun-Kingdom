@@ -22,6 +22,7 @@ public class ProduceBuilding : MonoBehaviour
         Level = lv;
 		_data = data;
 		this.GetOrAddComponent<SpriteRenderer>().sprite = data.icon;
+        this.GetOrAddComponent<SpriteRenderer>().sortingOrder = 3;
         ProduceList = new List<ProduceInfo>();
 	}
 

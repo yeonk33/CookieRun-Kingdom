@@ -89,7 +89,7 @@ public class InventoryUI : MonoBehaviour
                 Debug.LogWarning("Not enough slots in the pool!"); // 풀에 아이템이 부족할 경우 경고
                 //slot = Instantiate(, _slotRoot).GetComponent<IInventorySlot>();
 
-            slot.SetData(itemID);
+            slot.SetUI(itemID);
 
             //_itemSlots[itemID] = slot;
         }

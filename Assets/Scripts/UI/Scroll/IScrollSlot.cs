@@ -1,5 +1,5 @@
 ﻿public interface IScrollSlot
 {
-    void SetData(string itemId);
-    void SetDataWithData(string id, object data);
+    void SetUI(string itemId);
+    void SetUIWithData(string id, object data);
 }

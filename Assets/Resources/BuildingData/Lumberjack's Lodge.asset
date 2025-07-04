@@ -17,19 +17,24 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 86c74ad46ccf69a4ea4c21a81ceb8b10, type: 3}
   buildingLevels:
   - level: 1
+    coinCost: 4000
     buildCost:
     - itemId: roll_cake_wood
-      amount: 5
+      amount: 2
     productions:
     - roll_cake_wood
   - level: 2
+    coinCost: 6100
     buildCost:
     - itemId: roll_cake_wood
       amount: 10
+    - itemId: tempered_pickaxe
+      amount: 2
     productions:
     - roll_cake_wood
     - roll_cake_wood_bundle
   - level: 3
+    coinCost: 51000
     buildCost:
     - itemId: roll_cake_wood
       amount: 15
@@ -38,6 +43,7 @@ MonoBehaviour:
     - roll_cake_wood_bundle
     - roll_cake_wood_pile
   - level: 4
+    coinCost: 89900
     buildCost:
     - itemId: roll_cake_wood
       amount: 20

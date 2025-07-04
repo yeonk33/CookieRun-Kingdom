@@ -10,7 +10,7 @@ public class MailboxSlotUI : MonoBehaviour, IScrollSlot
     [SerializeField] private Transform _rewardRoot;
     [SerializeField] private List<MailRewardUI> _rewards;
 
-    public void SetDataWithData(string message, object data)
+    public void SetUIWithData(string message, object data)
     {
         _message.text = message;
         _icon.sprite = Resources.Load<Sprite>($"Data/Icon/MailIcon");
@@ -24,7 +24,7 @@ public class MailboxSlotUI : MonoBehaviour, IScrollSlot
     }
 
     #region IScrollSlot Implementation
-    public void SetData(string id)
+    public void SetUI(string id)
     {
         
     }

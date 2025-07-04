@@ -7,7 +7,7 @@ public class InventorySlotUI : MonoBehaviour, IScrollSlot
     [SerializeField] private Image _item;
     [SerializeField] private TMP_Text _amountTxt;
 
-    public void SetData(string itemId)
+    public void SetUI(string itemId)
     {
         var item = ProductionDatabase.Get(itemId);
         _item.sprite = Resources.Load<Sprite>($"Data/Icon/{item.iconPath}");
@@ -15,7 +15,7 @@ public class InventorySlotUI : MonoBehaviour, IScrollSlot
     }
 
     #region IScrollSlot Implementation
-    public void SetDataWithData(string id, object data)
+    public void SetUIWithData(string id, object data)
     {
         
     }
