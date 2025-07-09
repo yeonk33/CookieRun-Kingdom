@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class BuildingPlacementManager : MonoBehaviour
     public static BuildingPlacementManager Instance;
 
     private List<ProduceBuilding> _activeBuildings = new();
+    public event Action OnBuildingPlaced;
 
     private void Awake()
     {
@@ -72,6 +74,11 @@ public class BuildingPlacementManager : MonoBehaviour
             pb.transform.position = TilemapRef.Instance.CellToWorld(d.cellPos); // 타일맵 참조 필요
             RegisterBuilding(pb);
         }
+    }
+
+    public void PlaceBuilding()
+    {
+        OnBuildingPlaced?.Invoke();
     }
 
     [System.Serializable]

@@ -7,10 +7,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProductionPanel : MonoBehaviour
+public class ProductionPanel : MonoBehaviour, IPanelUI
 {
 	public static ProductionPanel Instance { get; private set; }
-	private void Awake()
+
+    public Define.UIType Type => Define.UIType.Produce;
+
+    private void Awake()
 	{
 		if (Instance == null)
 			Instance = this;
@@ -62,11 +65,11 @@ public class ProductionPanel : MonoBehaviour
 
     public void OpenPanel(BuildingData data, int lv, ProduceBuilding building)
 	{
-		if (gameObject.activeSelf) {
-			this.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-		} else {
-			gameObject.SetActive(true);
-		}
+		//if (gameObject.activeSelf) {
+		//	this.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+		//} else {
+		//	gameObject.SetActive(true);
+		//}
 
 		_displayName.text = data.displayName;
 		_image.sprite = data.icon;

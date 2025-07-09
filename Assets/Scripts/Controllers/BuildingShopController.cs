@@ -3,11 +3,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BuildingShopController : MonoBehaviour
+public class BuildingShopController : MonoBehaviour, IPanelUI
 {
     private List<BuildingShopSlotUI> slots;
     [SerializeField] private RectTransform _slotPrefab;
     [SerializeField] private RectTransform _contentPanel;
+
+    public Define.UIType Type => Define.UIType.BuildingShop;
 
     void Start()
     {
@@ -45,11 +47,17 @@ public class BuildingShopController : MonoBehaviour
     
     public void ClosePanel()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        UIManager.Instance.HideUI(Type);
     }
 
     private void HandleOnPurchase(BuildingData building)
     {
         ClosePanel();
+    }
+
+    public void ShowPanel()
+    {
+        UIManager.Instance.ShowUI(Type);
     }
 }
