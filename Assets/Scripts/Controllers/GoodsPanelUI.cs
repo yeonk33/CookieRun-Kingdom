@@ -22,9 +22,10 @@ public class GoodsPanelUI : MonoBehaviour
 	private ProduceBuilding _building; // 현재 선택된 건물 정보
     private ProductionData _production;
 
-	public void Init(string buildingId, ProduceBuilding building)
+	public void SetData(string buildingId, ProduceBuilding building, string productionId)
 	{
 		this.BuildingId = buildingId;
+		this.ProductionId = productionId;
         _production = ProductionDatabase.Get(ProductionId);
 		Debug.Log($"{ProductionId} {_production.displayName}");
 		DisplayName.text = _production.displayName;
@@ -38,15 +39,8 @@ public class GoodsPanelUI : MonoBehaviour
         ProduceButton.onClick.AddListener(OnProduce);
     }
 
-	public void SetData()
-	{
-
-	}
-
 	public void OnProduce()
 	{
-		//UIController.Instance.ConsumeCoin(Convert.ToInt32(Cost.text));
-		//ProductionPanel.Instance.Enqueue(_production);
 		ProduceManager.StartProduce(_building.InstanceId, _production.ProductionId, _building);
     }
 }

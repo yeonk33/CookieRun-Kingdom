@@ -1,6 +1,7 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 
+/* 테스트용 건물 생성 스크립트 */
 public class CreateBuilding : MonoBehaviour
 {
 	[BuildingIdAttribute]

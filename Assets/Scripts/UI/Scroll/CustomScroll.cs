@@ -44,7 +44,8 @@ public class CustomScrollView : MonoBehaviour
 		for (int i = 0; i < _visibleCount; ++i) {
             var go = Instantiate(SlotPrefab, ContentRoot);
             _pool.Add(go);
-		}
+			go.SetActive(false);
+        }
 
         // 스크롤시 아이템 갱신
         ScrollRect.onValueChanged.AddListener(_ => RefreshItems());
@@ -78,4 +79,12 @@ public class CustomScrollView : MonoBehaviour
 			//Debug.Log($"[{dataIndex}] Pos = {layout.GetItemPosition(dataIndex)}");
         }
 	}
+
+	public void SetItemCount(int count)
+	{
+		this.ItemCount = count;
+		this.ContentRoot.sizeDelta = layout.GetContentSize(count);
+		_lastFirstIndex = -1; // 새로 갱신하기 위해 초기화
+		RefreshItems();
+    }
 }

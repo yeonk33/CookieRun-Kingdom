@@ -32,7 +32,7 @@ public class ProduceBuilding : MonoBehaviour
 
 	private void OnMouseUp() // Collider 필요
 	{   UIManager.Instance.ShowUI(Define.UIType.Produce); // 생산 패널 열기
-        ProductionPanel.Instance.OpenPanel(_data, Level, this);
+        ProductionPanel.Instance.SetData(_data, Level, this);
 	}
 
     public void UpdateStatus() // 종료시간 기준으로 생산 완료 여부 업데이트 (ex. 껐다켰을때?)
