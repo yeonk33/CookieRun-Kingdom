@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputSystem: {fileID: -944628639613478452, guid: 2a09ed74c4b267642b093e4576203890, type: 3}
-  _sensitivity: 10
+  _sensitivity: 5
 --- !u!1 &4833279729501682790
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,6 +56,8 @@ public class CameraController : MonoBehaviour
 
     private void OnZoomPerformed(InputAction.CallbackContext context)
     {
+        if (IsPointerOverUI()) return; // UI 위에 있을 때는 드래그 무시
+
         _scrollY = context.ReadValue<float>();
         
         if (_scrollY != 0f)

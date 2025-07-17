@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 0}
   isEditMode: 1
+  _inputSystem: {fileID: -944628639613478452, guid: 45e3ce64f0ef1174181eb93e738feef4, type: 3}
 --- !u!114 &4604485815699992552
 MonoBehaviour:
   m_ObjectHideFlags: 0

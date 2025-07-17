@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum ItemCategory { All, Material, Goods, Etc }
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour, IPanelUI
 {
     public ItemCategory _category = ItemCategory.All;
 
@@ -13,6 +13,7 @@ public class InventoryUI : MonoBehaviour
     public float SpaceY = 10f;
     private List<string> _curCategoryItems = new List<string>();
 
+    public Define.UIType Type => Define.UIType.Inventory;
 
     private void OnEnable()
     {
@@ -28,7 +29,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        var slot = Resources.Load<GameObject>("Prefabs/Inventory Slot");
+        var slot = Resources.Load<GameObject>("Prefabs/Slot/Inventory Slot");
         var size = slot.GetComponent<RectTransform>();
         //ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width), Inventory.GetTotalCount(), slot);
         ScrollView.Init(new ScrollGrid(size.rect.size.x, size.rect.size.y, ScrollView.Viewport.rect.width, SpaceX, SpaceY), 400, slot); // 테스트용
@@ -98,5 +99,10 @@ public class InventoryUI : MonoBehaviour
         //{
         //    _slotRoot.GetChild(i).gameObject.SetActive(false);  // 재활용 안한 애들 비활성화
         //}
+    }
+
+    public void ShowPanel()
+    {
+        UIManager.Instance.ShowUI(Type);
     }
 }
