@@ -31,7 +31,10 @@ public class ProduceBuilding : MonoBehaviour
 	}
 
 	private void OnMouseUp() // Collider 필요
-	{   UIManager.Instance.ShowUI(Define.UIType.Produce); // 생산 패널 열기
+	{
+        if (EditState.isEditMode) return;
+
+        UIManager.Instance.ShowUI(Define.UIType.Produce); // 생산 패널 열기
         ProductionPanel.Instance.SetData(_data, Level, this);
 	}
 

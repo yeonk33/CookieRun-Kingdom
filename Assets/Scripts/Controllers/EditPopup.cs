@@ -21,7 +21,34 @@ public class EditPopup : MonoBehaviour, IPanelUI
 
     private void Awake()
     {
-        _confirmBtn.onClick.AddListener(() => BuildingPlacementManager.Instance.PlaceBuilding());
+        _confirmBtn.onClick.AddListener(() => 
+        {
+            BuildingPlacementManager.Instance.PlaceBuilding();
+            UIManager.Instance.HideUI(Define.UIType.EditPopup);
+        });
+
+        _cancelBtn.onClick.AddListener(() =>
+        {
+            EditModeController controller = FindObjectOfType<EditModeController>();
+            if (controller != null)
+            {
+                controller.CancelPlacement(); // ✨ 따로 만들 함수 (아래 설명)
+            }
+            UIManager.Instance.HideUI(Define.UIType.EditPopup);
+        });
+
+        _rotateBtn.onClick.AddListener(() =>
+        {
+            if (_target != null)
+            {
+                var sr = _target.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                {
+                    sr.flipX = !sr.flipX; // 좌우 반전 토글
+                }
+            }
+        });
+
         _rt = GetComponent<RectTransform>();
         _camera = Camera.main;
     }

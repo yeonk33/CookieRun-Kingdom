@@ -1,28 +1,81 @@
 ﻿using System;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Tilemaps;
 
 public class EditModeController : MonoBehaviour
 {
     #region Define
     const string Pivot = "Pivot";
+    const string DragAction = "Drag";
     #endregion
+
+    public Tilemap tilemap;
+
+    [SerializeField] InputActionAsset _inputSystem;
+    private InputAction _drag;
 
     private Camera _camera;
     private GameObject _object;
     private Vector3Int _lastCell;
     private Vector3 _offset;
-    private BuildingShopController _buildingShopController;
-    private GameObject _editPopup;
-
-    public Tilemap tilemap;
-    public bool isEditMode;
-
+    
     private void Start()
     {
         _camera = Camera.main;
         EventManager.OnBuildingPurchased += HandleOnPurchase;
         BuildingPlacementManager.Instance.OnBuildingPlaced += PlaceBuilding;
+
+        _drag = _inputSystem[DragAction];
+        _drag.performed -= OnDragPerformed;
+        _drag.performed += OnDragPerformed;
+        _drag.started -= OnDragStarted;
+        _drag.started += OnDragStarted;
+        _drag.canceled -= OnDragCanceled;
+        _drag.canceled += OnDragCanceled;
+        _drag.Enable();
+    }
+
+    private void OnDragStarted(InputAction.CallbackContext context)
+    {
+        if (!EditState.isEditMode || _object == null) return;
+
+        Vector2 screenPos = Mouse.current.position.ReadValue();
+        Vector2 worldPos = _camera.ScreenToWorldPoint(screenPos);
+
+        RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+        var building = hit.collider?.GetComponent<ProduceBuilding>();
+
+        if (building != null && building.gameObject == _object)
+        {
+            EditState.IsDraggingBuilding = true;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        _drag.performed -= OnDragPerformed;
+        _drag.canceled -= OnDragCanceled;
+    }
+    private void OnDragCanceled(InputAction.CallbackContext context)
+    {
+        EditState.IsDraggingBuilding = false;
+    }
+
+    private void OnDragPerformed(InputAction.CallbackContext context)
+    {
+        if (!EditState.isEditMode || !EditState.IsDraggingBuilding) return;
+
+        Vector3Int cellPos = CalculateCellPos();
+        if (cellPos == _lastCell) return;
+        _object.transform.position = tilemap.CellToLocal(cellPos) + _offset;
+
+        // 유효성 체크
+        TileBase tile = tilemap.GetTile(cellPos); // 나중에 설치 불가능한 타일 추가 될 수 있음 (ex. 물)
+        _object.GetComponent<SpriteRenderer>().color = tile != null ? Color.red : Color.white;
     }
 
     private void SetEditMode()
@@ -36,46 +89,14 @@ public class EditModeController : MonoBehaviour
         _lastCell = cell;
 
         UIManager.Instance.GetUI(Define.UIType.EditPopup).GetComponent<EditPopup>().SetTarget(_object.transform);
-        //if (_editPopup == null)
-        //{
-        //    Debug.Log("ee");
-        //    _editPopup = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/EditPopup"));
-        //}
-        //Debug.Log("ff");
-        //_editPopup.SetActive(true);
     }
 
 
     private void HandleOnPurchase(BuildingData building)
     {
-        isEditMode = true;
+        EditState.isEditMode = true;
         SetEditMode();
         UIManager.Instance.ShowUI(Define.UIType.EditPopup);
-    }
-
-    private void Update()
-    {
-        if (!isEditMode) return;
-
-        if (CalculateCellPos() == _lastCell || !isEditMode) return;
-        Vector3Int cellPos = CalculateCellPos();
-        _object.transform.position = tilemap.CellToLocal(cellPos) + _offset;
-
-        TileBase tile = tilemap.GetTile(cellPos); // 나중에 설치 불가능한 타일 추가 될 수 있음 (ex. 물)
-        if (tile != null)
-        {
-            _object.GetComponent<SpriteRenderer>().color = Color.red;
-            return;
-        }
-        else
-        {
-            _object.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-
-        //if (Input.GetKeyUp(KeyCode.Space)) // 설치
-        //{
-        //    PlaceBuilding();
-        //}
     }
 
     public void PlaceBuilding()
@@ -90,13 +111,25 @@ public class EditModeController : MonoBehaviour
             BuildingPlacementManager.Instance.RegisterBuilding(produceBuilding);
 
             BuildingPlacementManager.Instance.SaveAll();
-            isEditMode = false;
+            EditState.isEditMode = false;
             _object = null;
         }
         else
         {
             Debug.Log("이미 건물이 있음!");
         }
+    }
+
+    public void CancelPlacement()
+    {
+        if (_object != null)
+        {
+            Destroy(_object); // 오브젝트 제거
+            _object = null;
+        }
+
+        EditState.isEditMode = false;
+        EditState.IsDraggingBuilding = false;
     }
 
     private Vector3Int CalculateCellPos()
@@ -106,4 +139,10 @@ public class EditModeController : MonoBehaviour
         Vector3Int cellPos = tilemap.WorldToCell(mousePos);
         return cellPos;
     }
+}
+
+public static class EditState
+{
+    public static bool isEditMode = false; // 편집 모드 여부
+    public static bool IsDraggingBuilding = false; // 건물 드래그 중 여부
 }

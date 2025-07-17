@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
 
     private void OnDragPerformed(InputAction.CallbackContext context)
     {
-        if (IsPointerOverUI()) return; // UI 위에 있을 때는 드래그 무시
+        if (IsPointerOverUI() || EditState.IsDraggingBuilding) return; // UI 위에 있을 때는 드래그 무시
 
         _delta = context.ReadValue<Vector2>();
         if (_delta != Vector2.zero)

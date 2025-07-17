@@ -1,0 +1,79 @@
+{
+    "name": "EditMode",
+    "maps": [
+        {
+            "name": "Edit",
+            "id": "1ae6d759-5503-4c62-990e-61caedef1ce1",
+            "actions": [
+                {
+                    "name": "Drag",
+                    "type": "Value",
+                    "id": "fc201b0c-b305-4fa9-aebd-2d5b170cd25b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "One Modifier",
+                    "id": "79c8c05f-c7e6-442f-9039-58f4ea9eb124",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drag",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "95dfbd3e-e48d-4bf8-a57a-30b52e8508d9",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC;Mobile",
+                    "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "573d923d-ed63-421c-a012-4e512d0527f8",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC;Mobile",
+                    "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "PC",
+            "bindingGroup": "PC",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Mobile",
+            "bindingGroup": "Mobile",
+            "devices": [
+                {
+                    "devicePath": "<Touchscreen>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

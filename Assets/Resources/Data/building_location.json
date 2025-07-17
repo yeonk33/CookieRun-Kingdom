@@ -2,11 +2,41 @@
     "list": [
         {
             "buildingId": "smithy",
-            "instanceId": "a10991cd-d743-4268-9352-efbc71f63389",
+            "instanceId": "092e6c3d-0d6c-4f42-8026-c8a14a5c2a59",
             "level": 2,
             "cellPos": {
-                "x": 2,
-                "y": -3,
+                "x": -4,
+                "y": 19,
+                "z": 0
+            }
+        },
+        {
+            "buildingId": "smithy",
+            "instanceId": "9c72dbed-10ba-4657-ab69-4fbda38dad0a",
+            "level": 2,
+            "cellPos": {
+                "x": -6,
+                "y": 5,
+                "z": 0
+            }
+        },
+        {
+            "buildingId": "smithy",
+            "instanceId": "dbf9cee3-c048-4909-98a1-5de489ded325",
+            "level": 2,
+            "cellPos": {
+                "x": -4,
+                "y": -5,
+                "z": 0
+            }
+        },
+        {
+            "buildingId": "smithy",
+            "instanceId": "93288642-4ab1-441a-b01e-e97d1d7c08bd",
+            "level": 2,
+            "cellPos": {
+                "x": 9,
+                "y": 2,
                 "z": 0
             }
         }
