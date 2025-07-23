@@ -20,7 +20,7 @@ MonoBehaviour:
   cooltime: 5
   skillType: 1
   skillTargetType: 5
-  targetPriority: 3
+  targetPriority: 1
   skillRange: 99
   damageMultiplier: 1
   animationInfo:

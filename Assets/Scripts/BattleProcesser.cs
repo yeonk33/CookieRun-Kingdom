@@ -85,7 +85,15 @@ public class BattleProcesser : MonoBehaviour
             unit.UpdateCooltime(_battleTime);
 
             // 타겟팅 한다
-            var target = FindAttackTarget(unit, enemyTeam);
+            IBattleUnit target = null;
+            if (unit.AttackType == AttackType.Heal)
+            {
+                target = FindHealTarget(unit, team);
+            }
+            else
+            {
+                target = FindAttackTarget(unit, enemyTeam);
+            }
             if (target == null)
                 continue;
 
@@ -109,7 +117,16 @@ public class BattleProcesser : MonoBehaviour
             // 스킬을 먼저 사용
             if (unit.SkillCurCooltime <= 0f && unit.SkillData != null)
             {
-                var skillTargets = FindSkillTargets(unit, enemyTeam);
+                List<IBattleUnit> skillTargets = null;
+                if (unit.SkillData.skillType == SkillType.Heal)
+                {
+                    skillTargets = FindHealSkillTargets(unit, team);
+                }
+                else
+                {
+                    skillTargets = FindSkillTargets(unit, enemyTeam);
+                }
+
                 if (skillTargets.Count > 0)
                 {
                     unit.TrySkillAttack(skillTargets, _randomGenerator);
@@ -174,6 +191,29 @@ public class BattleProcesser : MonoBehaviour
         }
     }
 
+    private IBattleUnit FindHealTarget(IBattleUnit healer, List<IBattleUnit> team, TargetPriority targetPriority = TargetPriority.LowestHP)
+    {
+        var alivecookies = team.Where(unit => unit.IsAlive && unit != healer).ToList();
+        if (alivecookies.Count == 0)        // == if (aliveEnemies.Any())
+            return null;
+
+        TargetPriority priority = healer.AttackTargetPriority;
+        if (targetPriority != TargetPriority.None)
+            priority = targetPriority;
+
+        switch (priority)
+        {
+            case TargetPriority.Nearest:
+                return alivecookies.OrderBy(e => Vector3.Distance(healer.Position, e.Position)).First();
+            case TargetPriority.Farthest:
+                return alivecookies.OrderByDescending(e => Vector3.Distance(healer.Position, e.Position)).First();
+            case TargetPriority.LowestHP:
+                return alivecookies.OrderBy(e => e.CurrentHP).First();
+            default:
+                return alivecookies.First();
+        }
+    }
+
     private List<IBattleUnit> FindSkillTargets(IBattleUnit caster, List<IBattleUnit> enemyTeam)
     {
         var targets = new List<IBattleUnit>();
@@ -194,6 +234,32 @@ public class BattleProcesser : MonoBehaviour
                 break;
             case SkillTargetType.AllEnemies:
                 targets = aliveEnemies;
+                break;
+        }
+
+        return targets;
+    }
+
+    private List<IBattleUnit> FindHealSkillTargets(IBattleUnit caster, List<IBattleUnit> team)
+    {
+        var targets = new List<IBattleUnit>();
+        var aliveTeam = team.Where(unit => unit.IsAlive).ToList();
+
+        if (caster.SkillData == null)
+            return targets;
+
+        switch (caster.SkillData.skillTargetType)
+        {
+            case SkillTargetType.SingleAlly:
+                var singleTarget = FindAttackTarget(caster, team, caster.SkillData.targetPriority);
+                if (singleTarget != null)
+                    targets.Add(singleTarget);
+                break;
+            case SkillTargetType.MultipleAllies:
+                targets = aliveTeam.OrderBy(e => Vector3.Distance(caster.Position, e.Position)).Take(3).ToList();
+                break;
+            case SkillTargetType.AllAllies:
+                targets = aliveTeam;
                 break;
         }
 

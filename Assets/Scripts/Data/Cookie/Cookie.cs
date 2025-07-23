@@ -139,7 +139,14 @@ public class Cookie : MonoBehaviour, IBattleUnit
         // 사양에 따라서 이런 구조 말고, N초 뒤에 코루틴으로 데미지를 처리한다 <- 이런 구조도 가능하다!
         animController.PlayAttackAnimation(cookieData, () =>
         {
-            PerformAttackDamage(target, battleRandom);
+            if (AttackType == AttackType.Heal)
+            {
+                PerformAttackHeal(target, battleRandom);
+            }
+            else
+            {
+                PerformAttackDamage(target, battleRandom);
+            }
             isPerformingAction = false;
 
             // 공격 후 Idle로 돌아가기
@@ -193,6 +200,22 @@ public class Cookie : MonoBehaviour, IBattleUnit
         target.TakeDamage(finalDamage, isCritical);
 
         OnAttack?.Invoke(this, target, finalDamage, isCritical);
+    }
+
+    private void PerformAttackHeal(IBattleUnit target, System.Random battleRandom)
+    {
+        // 크리티컬 판정
+        bool isCritical = battleRandom.NextDouble() < CriticalRate; // 0~1 사이의 랜덤 값 생성
+
+        // 힐량 계산
+        float heal = AttackPower;
+        if (isCritical) heal *= CriticalDamage;
+
+        string criText = isCritical ? " [크리티컬!]" : "";
+        Debug.Log($"{DisplayName}이(가) {target.DisplayName} 회복~ 회복량: {heal}{criText} (대상 HP: {target.CurrentHP}/{target.MaxHP})");
+
+
+        target.TakeHeal(Mathf.RoundToInt(heal)); // 대상에게 힐 적용
     }
 
     private void PerformSkillDamage(List<IBattleUnit> targets, System.Random battleRandom)
