@@ -19,6 +19,9 @@ public class BattleProcesser : MonoBehaviour
     private System.Random _randomGenerator;
     private int _seed;
 
+    [Header("Battle UI")]
+    [SerializeField] private BattleUI _battleUI;
+
     private void InitBattle(int seed)
     {
         _seed = seed == -1 ? UnityEngine.Random.Range(0, int.MaxValue) : seed;
@@ -41,11 +44,13 @@ public class BattleProcesser : MonoBehaviour
         foreach (var unit in _playerTeam)
         {
             unit.Init();
+            unit.OnDamaged += OnDamagedHandler; // 데미지 이벤트 핸들러 등록
         }
 
         foreach (var unit in _enemyTeam)
         {
             unit.Init();
+            unit.OnDamaged += OnDamagedHandler; // 데미지 이벤트 핸들러 등록
         }
 
         _isBattleActive = true;
@@ -269,5 +274,11 @@ public class BattleProcesser : MonoBehaviour
     public bool IsBattleOver()
     {
         return _playerTeam.All(unit => !unit.IsAlive) || _enemyTeam.All(unit => !unit.IsAlive);
+    }
+
+    private void OnDamagedHandler(IBattleUnit unit, int dmg, bool isCritical)
+    {
+        Debug.Log($"{unit.DisplayName}이(가) {dmg}의 피해를 입었습니다. (Critical: {isCritical})@@@@@@@@@@@@@");
+        _battleUI.ShowDamage(dmg, unit.Position, isCritical);
     }
 }

@@ -169,7 +169,7 @@ public class CookieAnimController : MonoBehaviour
     public void PlaySkillAnimation(CookieData cookieData, System.Action onComplete = null)
     {
         _currentState = AnimationState.Skill;
-        PlayAnimation(cookieData.attackAnimationInfo, () =>
+        PlayAnimation(cookieData.skillData.animationInfo, () =>
         {
             _currentState = AnimationState.Idle;
             onComplete?.Invoke();
