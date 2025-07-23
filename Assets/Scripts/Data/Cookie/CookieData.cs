@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using static Define;
 
-// 각 쿠키의 기본 정보를 담을 SO
 [CreateAssetMenu(fileName = "NewCookie", menuName = "Game/CookieData")]
 public class CookieData : ScriptableObject
 {
@@ -24,11 +25,11 @@ public class CookieData : ScriptableObject
     public float baseCriticalRate = 0.1f;   // 기본 크리티컬 확률 (10%)
     public float baseCriticalDamage = 1.5f; // 기본 크리티컬 데미지 배율 (150%)
 
-    //[Header("스킬 데이터")]
-    //public SkillData skillData;
+    [Header("스킬 데이터")]
+    public SkillData skillData;
 
-    //[Header("평타 애니메이션")]
-    //public AnimationInfo attackAnimationInfo;    // 평타 애니메이션 정보
+    [Header("평타 애니메이션")]
+    public AnimationInfo attackAnimationInfo;    // 평타 애니메이션 정보
 
     public GameObject prefab;
     public Sprite icon;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cookieID: ginger_brave
   displayName: "\uC6A9\uAC10\uD55C \uCFE0\uD0A4"
-  baseHP: 500
+  baseHP: 50
   baseAttackPower: 10
   baseDefensePower: 5
   attackCooltime: 2
@@ -24,3 +24,13 @@ MonoBehaviour:
   moveSpeed: 5
   baseCriticalRate: 0.1
   baseCriticalDamage: 1.5
+  skillData: {fileID: 11400000, guid: 8ea1eb5a1ade9d742b91d4e335d981c9, type: 2}
+  attackAnimationInfo:
+    animName: skill1
+    isLoop: 0
+    preAnim: 
+    loopAnim: 
+    endAnim: 
+    loopDuration: 0
+  prefab: {fileID: 1017960423608261849, guid: a78fff3983e3d374ba1356c8a17d369a, type: 3}
+  icon: {fileID: 0}

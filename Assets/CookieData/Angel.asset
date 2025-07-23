@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cookieID: angel_cookie
   displayName: "\uCC9C\uC0AC\uB9DB \uCFE0\uD0A4"
-  baseHP: 300
+  baseHP: 30
   baseAttackPower: 10
   baseDefensePower: 2
   attackCooltime: 2
@@ -24,3 +24,13 @@ MonoBehaviour:
   moveSpeed: 5
   baseCriticalRate: 0.1
   baseCriticalDamage: 1.5
+  skillData: {fileID: 11400000, guid: 68e1556c0e6e51c4b9e106a56f967d76, type: 2}
+  attackAnimationInfo:
+    animName: skill1
+    isLoop: 0
+    preAnim: 
+    loopAnim: 
+    endAnim: 
+    loopDuration: 0
+  prefab: {fileID: 1101025030228033768, guid: 6a6d894d3a49ebd448f73d2e15930baa, type: 3}
+  icon: {fileID: 0}

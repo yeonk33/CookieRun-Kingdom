@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f87e6a48a44e34fb7396457bd10900, type: 3}
+  m_Name: Ginger Skill
+  m_EditorClassIdentifier: 
+  skillID: ginger_skill_1
+  skillName: "\uC6A9\uAC10\uD55C \uB3CC\uACA9"
+  skillDescription: "\uC6A9\uAC10\uD558\uAC8C \uB3CC\uC9C4\uD574 \uBD80\uB52A\uD788\uBA70
+    \uC8FC\uBCC0 \uBC94\uC704\uC5D0 \uD53C\uD574\uB97C \uC785\uD78C\uB2E4."
+  cooltime: 5
+  skillType: 0
+  skillTargetType: 0
+  targetPriority: 1
+  skillRange: 10
+  damageMultiplier: 1
+  animationInfo:
+    animName: skill2_end
+    isLoop: 0
+    preAnim: 
+    loopAnim: 
+    endAnim: 
+    loopDuration: 0

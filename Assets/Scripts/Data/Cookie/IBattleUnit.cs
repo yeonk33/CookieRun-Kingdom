@@ -24,8 +24,8 @@ public interface IBattleUnit
     Define.TargetPriority AttackTargetPriority { get; }    // 평타 공격 대상 우선순위
 
     // 스킬 관련
-    //SkillData SkillData { get; }
-    //float SkillCurCooltime { get; set; }    // 현재 스킬 쿨타임
+    SkillData SkillData { get; }
+    float SkillCurCooltime { get; set; }    // 현재 스킬 쿨타임
 
     // 이동 관련
     float MoveSpeed { get; }
