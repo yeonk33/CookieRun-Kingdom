@@ -16,7 +16,8 @@ public class CameraController : MonoBehaviour
     private InputAction _drag;
     private InputAction _zoom;
 
-    [SerializeField] private float _sensitivity = 5f;
+    [SerializeField] private float _dragSensitivity = 5f;
+    [SerializeField] private float _scrollSensitivity = 0.01f;
     private Vector2 _delta;
     private float _scrollY;
     
@@ -50,7 +51,7 @@ public class CameraController : MonoBehaviour
         _delta = context.ReadValue<Vector2>();
         if (_delta != Vector2.zero)
         {
-            transform.position += new Vector3(-_delta.x, -_delta.y, 0) * Time.deltaTime * _sensitivity;
+            transform.position += new Vector3(-_delta.x, -_delta.y, 0) * Time.deltaTime * _dragSensitivity;
         }
     }
 
@@ -62,8 +63,9 @@ public class CameraController : MonoBehaviour
         
         if (_scrollY != 0f)
         {
-            var zoom = _camera.m_Lens.OrthographicSize + _scrollY * 0.02f;
+            var zoom = _camera.m_Lens.OrthographicSize - _scrollY * _scrollSensitivity;
             _camera.m_Lens.OrthographicSize = Mathf.Clamp(zoom, 1f, 10f);
+            _dragSensitivity = _scrollY < 0 ? _dragSensitivity * 1.5f : _dragSensitivity / 1.5f; // 줌에 따라 드래그 감도 조정
         }
     }
 
